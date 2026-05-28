@@ -3,22 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나의 첫 GitHub 페이지</title>
+    <title>문서 목록</title>
     <style>
         body {
-            font-family: '맑은 고딕', sans-serif;
-            text-align: center;
-            padding: 50px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            font-family: '맑은 고딕', Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #333;
         }
-        h1 { font-size: 3em; margin-bottom: 20px; }
-        p { font-size: 1.3em; }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+        }
+        .doc-list {
+            list-style: none;
+            padding: 0;
+        }
+        .doc-item {
+            background: white;
+            margin: 12px 0;
+            padding: 18px 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .doc-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .doc-item a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-size: 1.15em;
+            display: block;
+        }
+        .doc-item a:hover {
+            color: #3498db;
+        }
+        .date {
+            color: #7f8c8d;
+            font-size: 0.95em;
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
-    <h1>🎉 안녕하세요!</h1>
-    <p>이 페이지가 GitHub Pages로 잘 작동하고 있습니다.</p>
-    <p>만든 사람: <strong>당신의 이름</strong></p>
+    <h1>📚 나의 문서 목록</h1>
+    
+    <ul class="doc-list">
+        <li class="doc-item">
+            <a href="document1.html">1. GitHub Pages 시작하기</a>
+            <div class="date">2026.05.28</div>
+        </li>
+        <li class="doc-item">
+            <a href="document2.html">2. HTML과 CSS 기초 정리</a>
+            <div class="date">2026.05.27</div>
+        </li>
+        <li class="doc-item">
+            <a href="document3.html">3. JavaScript 기본 문법</a>
+            <div class="date">2026.05.26</div>
+        </li>
+        <li class="doc-item">
+            <a href="document4.html">4. 나만의 포트폴리오 만들기</a>
+            <div class="date">2026.05.25</div>
+        </li>
+    </ul>
 </body>
 </html>
