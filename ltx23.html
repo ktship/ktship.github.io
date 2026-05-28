@@ -48,10 +48,10 @@
                 <p class="text-sm text-gray-400 mb-2">순정 bf16 모델(A100/H100 추천, 32G ram)과 FP8 경량화 모델(4090 추천 16G ram) 중 선택하여 다운로드하세요.</p>
                 <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm text-green-400 font-mono"><button class="copy-btn" onclick="copyText(this)">복사</button><code>cd /workspace/ComfyUI/models/checkpoints/
 
-# 옵션 A (압축 안 한 순정 bf16)
+# 옵션 A (압축 안 한 순정 bf16, 32G 이상)
 wget -O Sulphur-2-base.safetensors https://huggingface.co/SulphurAI/Sulphur-2-base/resolve/main/Sulphur-2-base.safetensors
 
-# 옵션 B (FP8 경량화)
+# 옵션 B (FP8 경량화, 16G 이상)
 wget -O Sulphur-2-base-FP8.safetensors https://huggingface.co/Winnougan/Sulphur-2-LTX-2.3/resolve/main/Sulphur-2-base-FP8.safetensors</code></pre>
             </div>
 
