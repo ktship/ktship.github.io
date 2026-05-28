@@ -49,10 +49,11 @@
                 <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm text-green-400 font-mono"><button class="copy-btn" onclick="copyText(this)">복사</button><code>cd /workspace/ComfyUI/models/checkpoints/
 
 # 옵션 A (압축 안 한 순정 bf16, 32G 이상)
-wget -O Sulphur-2-base.safetensors https://huggingface.co/SulphurAI/Sulphur-2-base/resolve/main/Sulphur-2-base.safetensors
+wget -c -O sulphur_dev_bf16_model.safetensors "https://huggingface.co/vantagewithai/Sulphur-2-Base-Split/resolve/main/model/sulphur_dev_bf16_model.safetensors"
 
 # 옵션 B (FP8 경량화, 16G 이상)
-wget -O Sulphur-2-base-FP8.safetensors https://huggingface.co/Winnougan/Sulphur-2-LTX-2.3/resolve/main/Sulphur-2-base-FP8.safetensors</code></pre>
+wget -c -O sulphur_dev_model_fp8mixed.safetensors "https://huggingface.co/vantagewithai/Sulphur-2-Base-Split/resolve/main/model/sulphur_dev_model_fp8mixed.safetensors"
+                </code></pre>
             </div>
 
             <!-- 1-2 -->
