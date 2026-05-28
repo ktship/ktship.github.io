@@ -61,7 +61,8 @@ wget -c -O sulphur_dev_model_fp8mixed.safetensors "https://huggingface.co/vantag
                 <h3 class="text-lg font-semibold text-gray-200 mb-2">1-2. 가속화 로라 (LoRA)</h3>
                 <p class="text-sm text-gray-400 mb-2">비주얼 디테일을 가다듬고 8스텝 이하의 초고속 생성을 가능하게 해주는 필수 로라입니다.</p>
                 <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm text-green-400 font-mono"><button class="copy-btn" onclick="copyText(this)">복사</button><code>cd /workspace/ComfyUI/models/loras/
-wget -O Sulphur_Distill_LoRA.safetensors https://huggingface.co/Seregil13th/Sulphur-2-base/resolve/main/Sulphur_Distill_LoRA.safetensors</code></pre>
+wget -c -O ltx-2.3-22b-distilled-1.1_lora-dynamic_fro09_avg_rank_111_bf16.safetensors "https://huggingface.co/Kijai/LTX2.3_comfy/resolve/main/loras/ltx-2.3-22b-distilled-1.1_lora-dynamic_fro09_avg_rank_111_bf16.safetensors"
+                </code></pre>
             </div>
 
             <!-- 1-3 -->
@@ -69,7 +70,7 @@ wget -O Sulphur_Distill_LoRA.safetensors https://huggingface.co/Seregil13th/Sulp
                 <h3 class="text-lg font-semibold text-gray-200 mb-2">1-3. 텍스트 인코더 (Text Encoder)</h3>
                 <p class="text-sm text-gray-400 mb-2">구글 Gemma 3 12B 기반의 정식 텍스트 인코더 모델입니다.</p>
                 <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm text-green-400 font-mono"><button class="copy-btn" onclick="copyText(this)">복사</button><code>cd /workspace/ComfyUI/models/text_encoders/
-wget -O gemma3_ltx_text.safetensors https://huggingface.co/Lightricks/LTX-2-3/resolve/main/text_encoder/model.safetensors</code></pre>
+wget -c -O gemma3_ltx_text.safetensors "https://huggingface.co/Pavpif/ltx2-gemma3-text-encoder/resolve/main/model_gemma_3_12B_it_fp8_e4m3fn.safetensors?download=true"</code></pre>
             </div>
 
             <!-- 1-4 -->
@@ -79,10 +80,10 @@ wget -O gemma3_ltx_text.safetensors https://huggingface.co/Lightricks/LTX-2-3/re
                 <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm text-green-400 font-mono"><button class="copy-btn" onclick="copyText(this)">복사</button><code>cd /workspace/ComfyUI/models/vae/
 
 # 영상(비디오)용 VAE
-wget -O ltx2_3_vae.safetensors https://huggingface.co/Lightricks/LTX-2-3/resolve/main/ltx2_3_vae.safetensors
+wget -c -O ltx_video_vae.safetensors "https://huggingface.co/Lightricks/LTX-2/resolve/main/vae/diffusion_pytorch_model.safetensors?download=true"
 
 # 음성(오디오)용 VAE
-wget -O ltx2_3_audio_vae.safetensors https://huggingface.co/Lightricks/LTX-2-3/resolve/main/audio_vae/model.safetensors</code></pre>
+wget -c -O ltx_audio_vae.safetensors "https://huggingface.co/Lightricks/LTX-2/resolve/main/audio_vae/diffusion_pytorch_model.safetensors?download=true"</code></pre>
             </div>
 
             <!-- 1-5 -->
@@ -113,7 +114,14 @@ wget -O ltx2_3_controlnet_depth.safetensors https://huggingface.co/Lightricks/LT
                 <p class="text-sm text-gray-400 mb-2">저해상도 비디오를 화질 저하 없이 1080p, 4K 등 영화급 화질로 벼려내는 전용 업스케일러입니다.</p>
                 <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm text-green-400 font-mono"><button class="copy-btn" onclick="copyText(this)">복사</button><code>mkdir -p /workspace/ComfyUI/models/upscale_models
 cd /workspace/ComfyUI/models/upscale_models
-wget -O LTX_Spatial_Upscaler.safetensors https://huggingface.co/Lightricks/LTX-2-3/resolve/main/upscaler/spatial_upscaler.safetensors</code></pre>
+2배 1.1버젼
+wget -c -O ltx_upscaler_x2_v1.1.safetensors "https://huggingface.co/Lightricks/LTX-2.3/resolve/main/ltx-2.3-spatial-upscaler-x2-1.1.safetensors?download=true"
+1.5배 
+wget -c -O ltx_upscaler_x1.5.safetensors "https://huggingface.co/Lightricks/LTX-2.3/resolve/main/ltx-2.3-spatial-upscaler-x1.5-1.0.safetensors?download=true"
+
+latent upsampler(이건 옵션)
+wget -c -O ltx_latent_upsampler.safetensors "https://huggingface.co/Lightricks/LTX-2/resolve/main/latent_upsampler/diffusion_pytorch_model.safetensors?download=true"
+                </code></pre>
             </div>
         </section>
 
