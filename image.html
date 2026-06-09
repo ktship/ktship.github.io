@@ -144,6 +144,18 @@
             text-align: center;
             margin-bottom: 50px;
         }
+
+        .vram-box {
+            background-color: #1e3a8a;
+            border-left: 5px solid #3b82f6;
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .vram-box strong {
+            color: #93c5fd;
+        }
     </style>
 </head>
 <body>
@@ -179,10 +191,16 @@ pip install -r requirements.txt</code></pre>
         <p>ComfyUI를 재시작한 후, <strong>ComfyUI Manager</strong>에서 <code>TextEncodeQwenImageEditPlus</code> 검색 후 설치하세요.</p>
 
         <h3>워크플로우</h3>
-        <a href="https://huggingface.co/Phr00t/Qwen-Image-Edit-Rapid-AIO/blob/main/Qwen-Rapid-AIO.json" 
+        <a href="https://huggingface.co/Phr00t/Qwen-Image-Edit-Rapid-AIO/blob/main/Qwen-Rapid-AIO.json"
            target="_blank" class="workflow-btn">
             워크플로우 열기 (Qwen-Rapid-AIO.json)
         </a>
+
+        <div class="vram-box">
+            <strong>VRAM 요구사항</strong><br>
+            • FP8 버전 기준: <strong>16~20GB</strong><br>
+            • 안정적으로 사용하려면 <strong>20~24GB 이상</strong> 권장
+        </div>
     </div>
 
     <!-- 3. PixelDiT -->
@@ -201,10 +219,16 @@ huggingface-cli download Comfy-Org/PixelDiT \
   --local-dir /workspace/ComfyUI/models/text_encoders</code></pre>
 
         <h3>워크플로우</h3>
-        <a href="https://github.com/Comfy-Org/workflow_templates/blob/main/templates/image_pixeldit_t2i.json" 
+        <a href="https://github.com/Comfy-Org/workflow_templates/blob/main/templates/image_pixeldit_t2i.json"
            target="_blank" class="workflow-btn">
             워크플로우 열기 (PixelDiT)
         </a>
+
+        <div class="vram-box">
+            <strong>VRAM 요구사항</strong><br>
+            • bf16 버전 기준: <strong>10~14GB</strong><br>
+            • mxfp8 버전 사용 시 <strong>8~12GB</strong>에서도 동작 가능
+        </div>
     </div>
 
     <!-- 파일 저장 경로 요약 -->
