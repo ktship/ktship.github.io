@@ -215,7 +215,7 @@ python main.py --listen 0.0.0.0 --port 8188</code></pre>
             <li><strong>RunPod 웹 대시보드</strong>로 이동하여 해당 Pod의 <strong>Connect</strong> 버튼을 누르고, <strong>Start Web Terminal</strong>을 클릭해 브라우저용 까만 터미널 창을 엽니다.</li>
             <li>Web Terminal 창에 아래 명령어를 복사해서 붙여넣습니다. (두 번째 줄의 따옴표 <code>""</code> 사이에 아까 복사한 공개키를 넣으시면 됩니다.)
                 <pre><code>mkdir -p ~/.ssh
-echo ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKgNQlb/JOKr6r6p+9XI8OsChrlPfSgO+E8thw0JcS9T ktship@gmail.com >> ~/.ssh/authorized_keys
+echo "ssh" >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys</code></pre>
             </li>
             <li>이제 다시 <strong>맥북 터미널</strong>로 돌아가서 ssh 다음에 아래 줄을 추가해서 엔터하면 얼림.
