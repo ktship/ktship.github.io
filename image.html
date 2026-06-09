@@ -162,17 +162,41 @@
 
     <div class="header">
         <h1>RunPod 설치 가이드</h1>
-        <p class="subtitle">Qwen Image Edit vs PixelDiT • ComfyUI</p>
+        <p class="subtitle">ComfyUI 기본 세팅부터 Qwen / PixelDiT 모델까지</p>
     </div>
 
     <div class="section">
-        <h2>1. 사전 준비 (Linux / RunPod)</h2>
+        <h2>1. ComfyUI 및 매니저 설치 (Linux / RunPod)</h2>
+        
+        <h3>① ComfyUI 본체 설치</h3>
+        <pre><code># 1. ComfyUI 깃허브 저장소 복제 (/workspace 등 원하는 경로에서 실행)
+git clone https://github.com/comfyanonymous/ComfyUI.git
+
+# 2. 폴더로 이동
+cd ComfyUI
+
+# 3. 필요한 파이썬 패키지 설치
+pip install -r requirements.txt</code></pre>
+
+        <h3>② ComfyUI Manager 설치 (필수)</h3>
+        <pre><code># 1. 커스텀 노드 폴더로 이동
+cd custom_nodes
+
+# 2. 매니저 저장소 복제
+git clone https://github.com/ltdrdata/ComfyUI-Manager.git
+
+# 3. 원래 폴더(ComfyUI)로 복귀
+cd ..</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>2. 모델 다운로드 사전 준비</h2>
         <pre><code># hf 명령어 사용을 위한 허깅페이스 허브 설치
 pip install -U huggingface_hub</code></pre>
     </div>
 
     <div class="section">
-        <h2>2. Qwen Image Edit (Rapid-AIO v23)</h2>
+        <h2>3. Qwen Image Edit (Rapid-AIO v23)</h2>
 
         <h3>다운로드</h3>
         <pre><code>hf download Phr00t/Qwen-Image-Edit-Rapid-AIO \
@@ -196,7 +220,7 @@ pip install -U huggingface_hub</code></pre>
     </div>
 
     <div class="section">
-        <h2>3. PixelDiT 설치</h2>
+        <h2>4. PixelDiT 설치</h2>
 
         <h3>다운로드</h3>
         <pre><code># 메인 모델
@@ -223,7 +247,7 @@ hf download Comfy-Org/PixelDiT \
     </div>
 
     <div class="section">
-        <h2>파일 저장 경로 요약</h2>
+        <h2>5. 파일 저장 경로 요약</h2>
         <table>
             <thead>
                 <tr>
