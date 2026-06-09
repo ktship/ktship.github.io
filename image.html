@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunPod 추천 모델 비교: Qwen Image Edit vs PixelDiT</title>
+    <style>
+        body { font-family: system-ui, sans-serif; line-height: 1.6; max-width: 1100px; margin: 40px auto; padding: 20px; }
+        h1 { color: #1a1a1a; }
+        .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .card h2 { margin-top: 0; color: #2563eb; }
+        .section { margin-bottom: 20px; }
+        .label { font-weight: bold; color: #374151; }
+        ul { padding-left: 20px; }
+        .warning { background-color: #fef3c7; padding: 12px; border-radius: 8px; border-left: 5px solid #f59e0b; }
+        .good { background-color: #dcfce7; padding: 12px; border-radius: 8px; border-left: 5px solid #22c55e; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f8fafc; }
+    </style>
+</head>
+<body>
+
+    <h1>RunPod 추천 비교: Qwen Image Edit vs PixelDiT</h1>
+    <p><strong>목적</strong>: 이미지 편집 (특히 NSFW 가능 여부 중심)</p>
+
+    <div class="comparison">
+
+        <!-- Qwen Image Edit -->
+        <div class="card">
+            <h2>1. Qwen Image Edit (Rapid-AIO)</h2>
+            
+            <div class="section">
+                <span class="label">워크플로우</span><br>
+                <strong>첨부된 파일 사용</strong><br>
+                <code>Qwen-Rapid-AIO.json</code>
+            </div>
+
+            <div class="section">
+                <span class="label">NSFW 가능 여부</span><br>
+                <div class="good">
+                    <strong>가능</strong> (Phr00t의 NSFW 버전 사용 시)<br>
+                    Qwen 공식 모델보다는 훨씬 잘 됩니다.
+                </div>
+            </div>
+
+            <div class="section">
+                <span class="label">RunPod에서 다운받을 파일</span>
+                <table>
+                    <tr><th>파일</th><th>경로</th></tr>
+                    <tr>
+                        <td>메인 모델 (NSFW 추천)</td>
+                        <td><code>Phr00t/Qwen-Image-Edit-Rapid-AIO</code><br>
+                            → <strong>v19 NSFW</strong> 또는 <strong>v23 NSFW</strong> 버전
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>커스텀 노드</td>
+                        <td><code>TextEncodeQwenImageEditPlus</code><br>
+                            (ComfyUI Manager에서 설치)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="section">
+                <span class="label">VRAM 요구사항</span><br>
+                <strong>20~24GB 이상</strong> 권장 (FP8 버전 사용 시 16~20GB 가능)
+            </div>
+
+            <div class="warning">
+                <strong>주의</strong>: 공식 Qwen 모델은 NSFW가 거의 안 되므로, 반드시 <strong>Phr00t NSFW 버전</strong>을 사용하세요.
+            </div>
+        </div>
+
+        <!-- PixelDiT -->
+        <div class="card">
+            <h2>2. PixelDiT (Core)</h2>
+            
+            <div class="section">
+                <span class="label">워크플로우</span><br>
+                ComfyUI 내장 템플릿 또는 공식 문서 워크플로우 사용<br>
+                <small>https://docs.comfy.org/tutorials/image/pixeldit/pixeldit</small>
+            </div>
+
+            <div class="section">
+                <span class="label">NSFW 가능 여부</span><br>
+                <div class="good">
+                    <strong>Qwen보다는 잘 됩니다.</strong><br>
+                    완전 무검열은 아니지만, Qwen보다는 검열이 약합니다.
+                </div>
+            </div>
+
+            <div class="section">
+                <span class="label">RunPod에서 다운받을 파일</span>
+                <table>
+                    <tr><th>파일</th><th>경로</th></tr>
+                    <tr>
+                        <td>메인 모델</td>
+                        <td><code>Comfy-Org/PixelDiT</code><br>
+                            → <code>pixeldit_1300m_1024px_bf16.safetensors</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>텍스트 인코더</td>
+                        <td><code>Comfy-Org/PixelDiT</code><br>
+                            → <code>gemma_2_2b_it_elm_bf16.safetensors</code>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="section">
+                <span class="label">VRAM 요구사항</span><br>
+                <strong>10~14GB</strong> 정도 (mxfp8 버전 사용 시 더 낮아짐)
+            </div>
+
+            <div class="warning">
+                <strong>주의</strong>: NSFW는 어느 정도 가능하지만, 매우 노골적인 콘텐츠는 품질이 떨어질 수 있습니다.
+            </div>
+        </div>
+
+    </div>
+
+    <h2 style="margin-top: 50px;">최종 추천</h2>
+    
+    <table>
+        <tr>
+            <th>목적</th>
+            <th>추천 모델</th>
+            <th>이유</th>
+        </tr>
+        <tr>
+            <td><strong>NSFW 위주</strong></td>
+            <td><strong>Qwen Image Edit (Rapid-AIO NSFW)</strong></td>
+            <td>NSFW 성능이 더 좋고, 편집 기능이 강력함</td>
+        </tr>
+        <tr>
+            <td><strong>가벼운 사용 + NSFW 가볍게</strong></td>
+            <td><strong>PixelDiT</strong></td>
+            <td>VRAM 적게 먹고, Qwen보다는 검열이 약함</td>
+        </tr>
+        <tr>
+            <td><strong>둘 다 테스트해보고 싶을 때</strong></td>
+            <td><strong>둘 다 설치 추천</strong></td>
+            <td>VRAM이 충분하다면 둘 다 써보는 게 좋음</td>
+        </tr>
+    </table>
+
+</body>
+</html>
