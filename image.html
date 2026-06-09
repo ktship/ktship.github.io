@@ -201,7 +201,7 @@ pip install -U huggingface_hub</code></pre>
         <h3>다운로드</h3>
         <pre><code>hf download Phr00t/Qwen-Image-Edit-Rapid-AIO \
   --include "v23/Qwen-Rapid-AIO-NSFW-v23.safetensors" \
-  --local-dir /workspace/runpod-slim/ComfyUI/models/checkpoints</code></pre>
+  --local-dir /workspace/ComfyUI/models/checkpoints</code></pre>
 
         <h3>커스텀 노드 설치</h3>
         <p><strong>ComfyUI Manager</strong>에서 <code>Comfyui-QwenEditUtils</code> 검색 후 설치하세요.</p>
@@ -226,12 +226,12 @@ pip install -U huggingface_hub</code></pre>
         <pre><code># 메인 모델
 hf download Comfy-Org/PixelDiT \
   --include "pixeldit_1300m_1024px_bf16.safetensors" \
-  --local-dir /workspace/runpod-slim/ComfyUI/models/diffusion_models
+  --local-dir /workspace/ComfyUI/models/diffusion_models
 
 # 텍스트 인코더
 hf download Comfy-Org/PixelDiT \
   --include "gemma_2_2b_it_elm_bf16.safetensors" \
-  --local-dir /workspace/runpod-slim/ComfyUI/models/text_encoders</code></pre>
+  --local-dir /workspace/ComfyUI/models/text_encoders</code></pre>
 
         <h3>워크플로우</h3>
         <a href="https://github.com/Comfy-Org/workflow_templates/blob/main/templates/image_pixeldit_t2i.json"
@@ -258,15 +258,15 @@ hf download Comfy-Org/PixelDiT \
             <tbody>
                 <tr>
                     <td><strong>Qwen-Rapid-AIO v23</strong></td>
-                    <td><code>/workspace/runpod-slim/ComfyUI/models/checkpoints/</code></td>
+                    <td><code>/workspace/ComfyUI/models/checkpoints/</code></td>
                 </tr>
                 <tr>
                     <td><strong>PixelDiT 본체</strong></td>
-                    <td><code>/workspace/runpod-slim/ComfyUI/models/diffusion_models/</code></td>
+                    <td><code>/workspace/ComfyUI/models/diffusion_models/</code></td>
                 </tr>
                 <tr>
                     <td><strong>Gemma 텍스트 인코더</strong></td>
-                    <td><code>/workspace/runpod-slim/ComfyUI/models/text_encoders/</code></td>
+                    <td><code>/workspace/ComfyUI/models/text_encoders/</code></td>
                 </tr>
             </tbody>
         </table>
