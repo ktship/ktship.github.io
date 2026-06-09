@@ -3,155 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RunPod 추천 모델 비교: Qwen Image Edit vs PixelDiT</title>
+    <title>RunPod • Qwen vs PixelDiT 가이드</title>
     <style>
-        body { font-family: system-ui, sans-serif; line-height: 1.6; max-width: 1100px; margin: 40px auto; padding: 20px; }
-        h1 { color: #1a1a1a; }
-        .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap');
+
+        :root {
+            --bg: #0f172a;
+            --card: #1e2937;
+            --text: #e2e8f0;
+            --primary: #3b82f6;
         }
-        .card h2 { margin-top: 0; color: #2563eb; }
-        .section { margin-bottom: 20px; }
-        .label { font-weight: bold; color: #374151; }
-        ul { padding-left: 20px; }
-        .warning { background-color: #fef3c7; padding: 12px; border-radius: 8px; border-left: 5px solid #f59e0b; }
-        .good { background-color: #dcfce7; padding: 12px; border-radius: 8px; border-left: 5px solid #22c55e; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f8fafc; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            color: #f8fafc;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            font-size: 1.55rem;
+            font-weight: 600;
+            margin-top: 48px;
+            margin-bottom: 18px;
+            color: #f1f5f9;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #334155;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        .section {
+            background-color: var(--card);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 36px;
+            box-shadow: 0 10px 15px -3px rgb(15 23 42 / 0.2);
+        }
+
+        pre {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            margin: 14px 0;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #334155;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: #93c5fd;
+        }
+
+        .workflow-btn {
+            display: inline-flex;
+            align-items: center;
+            background-color: #1e40af;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin: 12px 0;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgb(30 64 175 / 0.3);
+        }
+
+        .workflow-btn:hover {
+            background-color: #1e3a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(30 64 175 / 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #1e2937;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgb(15 23 42 / 0.1);
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+
+        th {
+            background-color: #334155;
+            font-weight: 600;
+            color: #e0e7ff;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
     </style>
 </head>
 <body>
 
-    <h1>RunPod 추천 비교: Qwen Image Edit vs PixelDiT</h1>
-    <p><strong>목적</strong>: 이미지 편집 (특히 NSFW 가능 여부 중심)</p>
-
-    <div class="comparison">
-
-        <!-- Qwen Image Edit -->
-        <div class="card">
-            <h2>1. Qwen Image Edit (Rapid-AIO)</h2>
-            
-            <div class="section">
-                <span class="label">워크플로우</span><br>
-                <strong>첨부된 파일 사용</strong><br>
-                <code>Qwen-Rapid-AIO.json</code>
-            </div>
-
-            <div class="section">
-                <span class="label">NSFW 가능 여부</span><br>
-                <div class="good">
-                    <strong>가능</strong> (Phr00t의 NSFW 버전 사용 시)<br>
-                    Qwen 공식 모델보다는 훨씬 잘 됩니다.
-                </div>
-            </div>
-
-            <div class="section">
-                <span class="label">RunPod에서 다운받을 파일</span>
-                <table>
-                    <tr><th>파일</th><th>경로</th></tr>
-                    <tr>
-                        <td>메인 모델 (NSFW 추천)</td>
-                        <td><code>Phr00t/Qwen-Image-Edit-Rapid-AIO</code><br>
-                            → <strong>v19 NSFW</strong> 또는 <strong>v23 NSFW</strong> 버전
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>커스텀 노드</td>
-                        <td><code>TextEncodeQwenImageEditPlus</code><br>
-                            (ComfyUI Manager에서 설치)
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="section">
-                <span class="label">VRAM 요구사항</span><br>
-                <strong>20~24GB 이상</strong> 권장 (FP8 버전 사용 시 16~20GB 가능)
-            </div>
-
-            <div class="warning">
-                <strong>주의</strong>: 공식 Qwen 모델은 NSFW가 거의 안 되므로, 반드시 <strong>Phr00t NSFW 버전</strong>을 사용하세요.
-            </div>
-        </div>
-
-        <!-- PixelDiT -->
-        <div class="card">
-            <h2>2. PixelDiT (Core)</h2>
-            
-            <div class="section">
-                <span class="label">워크플로우</span><br>
-                ComfyUI 내장 템플릿 또는 공식 문서 워크플로우 사용<br>
-                <small>https://docs.comfy.org/tutorials/image/pixeldit/pixeldit</small>
-            </div>
-
-            <div class="section">
-                <span class="label">NSFW 가능 여부</span><br>
-                <div class="good">
-                    <strong>Qwen보다는 잘 됩니다.</strong><br>
-                    완전 무검열은 아니지만, Qwen보다는 검열이 약합니다.
-                </div>
-            </div>
-
-            <div class="section">
-                <span class="label">RunPod에서 다운받을 파일</span>
-                <table>
-                    <tr><th>파일</th><th>경로</th></tr>
-                    <tr>
-                        <td>메인 모델</td>
-                        <td><code>Comfy-Org/PixelDiT</code><br>
-                            → <code>pixeldit_1300m_1024px_bf16.safetensors</code>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>텍스트 인코더</td>
-                        <td><code>Comfy-Org/PixelDiT</code><br>
-                            → <code>gemma_2_2b_it_elm_bf16.safetensors</code>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="section">
-                <span class="label">VRAM 요구사항</span><br>
-                <strong>10~14GB</strong> 정도 (mxfp8 버전 사용 시 더 낮아짐)
-            </div>
-
-            <div class="warning">
-                <strong>주의</strong>: NSFW는 어느 정도 가능하지만, 매우 노골적인 콘텐츠는 품질이 떨어질 수 있습니다.
-            </div>
-        </div>
-
+    <div class="header">
+        <h1>RunPod 설치 가이드</h1>
+        <p class="subtitle">Qwen Image Edit vs PixelDiT • ComfyUI</p>
     </div>
 
-    <h2 style="margin-top: 50px;">최종 추천</h2>
-    
-    <table>
-        <tr>
-            <th>목적</th>
-            <th>추천 모델</th>
-            <th>이유</th>
-        </tr>
-        <tr>
-            <td><strong>NSFW 위주</strong></td>
-            <td><strong>Qwen Image Edit (Rapid-AIO NSFW)</strong></td>
-            <td>NSFW 성능이 더 좋고, 편집 기능이 강력함</td>
-        </tr>
-        <tr>
-            <td><strong>가벼운 사용 + NSFW 가볍게</strong></td>
-            <td><strong>PixelDiT</strong></td>
-            <td>VRAM 적게 먹고, Qwen보다는 검열이 약함</td>
-        </tr>
-        <tr>
-            <td><strong>둘 다 테스트해보고 싶을 때</strong></td>
-            <td><strong>둘 다 설치 추천</strong></td>
-            <td>VRAM이 충분하다면 둘 다 써보는 게 좋음</td>
-        </tr>
-    </table>
+    <!-- 1. 사전 준비 -->
+    <div class="section">
+        <h2>1. 사전 준비 (Linux / RunPod)</h2>
+        <pre><code># huggingface-cli 설치 (최초 1회만 실행)
+pip install -U huggingface_hub</code></pre>
+    </div>
+
+    <!-- 2. Qwen Image Edit -->
+    <div class="section">
+        <h2>2. Qwen Image Edit (Rapid-AIO v23)</h2>
+
+        <h3>다운로드</h3>
+        <pre><code>huggingface-cli download Phr00t/Qwen-Image-Edit-Rapid-AIO \
+  --include "Qwen-Rapid-AIO-NSFW-v23.safetensors" \
+  --local-dir /workspace/ComfyUI/models/checkpoints</code></pre>
+
+        <h3>커스텀 노드 설치</h3>
+        <pre><code>cd /workspace/ComfyUI/custom_nodes
+
+git clone https://github.com/Comfy-Org/ComfyUI-Manager.git
+cd ComfyUI-Manager
+pip install -r requirements.txt</code></pre>
+
+        <p>ComfyUI를 재시작한 후, <strong>ComfyUI Manager</strong>에서 <code>TextEncodeQwenImageEditPlus</code> 검색 후 설치하세요.</p>
+
+        <h3>워크플로우</h3>
+        <a href="https://huggingface.co/Phr00t/Qwen-Image-Edit-Rapid-AIO/blob/main/Qwen-Rapid-AIO.json" 
+           target="_blank" class="workflow-btn">
+            워크플로우 열기 (Qwen-Rapid-AIO.json)
+        </a>
+    </div>
+
+    <!-- 3. PixelDiT -->
+    <div class="section">
+        <h2>3. PixelDiT 설치</h2>
+
+        <h3>다운로드</h3>
+        <pre><code># 메인 모델
+huggingface-cli download Comfy-Org/PixelDiT \
+  --include "pixeldit_1300m_1024px_bf16.safetensors" \
+  --local-dir /workspace/ComfyUI/models/diffusion_models
+
+# 텍스트 인코더
+huggingface-cli download Comfy-Org/PixelDiT \
+  --include "gemma_2_2b_it_elm_bf16.safetensors" \
+  --local-dir /workspace/ComfyUI/models/text_encoders</code></pre>
+
+        <h3>워크플로우</h3>
+        <a href="https://github.com/Comfy-Org/workflow_templates/blob/main/templates/image_pixeldit_t2i.json" 
+           target="_blank" class="workflow-btn">
+            워크플로우 열기 (PixelDiT)
+        </a>
+    </div>
+
+    <!-- 파일 저장 경로 요약 -->
+    <div class="section">
+        <h2>파일 저장 경로 요약</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>모델</th>
+                    <th>저장 경로</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Qwen-Rapid-AIO v23</strong></td>
+                    <td><code>/workspace/ComfyUI/models/checkpoints/</code></td>
+                </tr>
+                <tr>
+                    <td><strong>PixelDiT 본체</strong></td>
+                    <td><code>/workspace/ComfyUI/models/diffusion_models/</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Gemma 텍스트 인코더</strong></td>
+                    <td><code>/workspace/ComfyUI/models/text_encoders/</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 </body>
 </html>
