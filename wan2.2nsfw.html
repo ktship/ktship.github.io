@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RunPod • WAN2.2 I2V NSFW 가이드</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap');
+
+        :root {
+            --bg: #0f172a;
+            --card: #1e2937;
+            --text: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            color: #f8fafc;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            font-size: 1.55rem;
+            font-weight: 600;
+            margin-top: 48px;
+            margin-bottom: 16px;
+            color: #f1f5f9;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #334155;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-top: 28px;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            background-color: var(--card);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 36px;
+            box-shadow: 0 10px 15px -3px rgb(15 23 42 / 0.2);
+        }
+
+        pre {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #334155;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: #93c5fd;
+        }
+
+        .workflow-btn {
+            display: inline-flex;
+            align-items: center;
+            background-color: #1e40af;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin: 12px 0;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgb(30 64 175 / 0.3);
+        }
+
+        .workflow-btn:hover {
+            background-color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        .vram-box {
+            background-color: #1e3a8a;
+            border-left: 5px solid #3b82f6;
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #1e2937;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+
+        th {
+            background-color: #334155;
+            font-weight: 600;
+            color: #e0e7ff;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>RunPod WAN2.2 I2V NSFW 가이드</h1>
+        <p class="subtitle">Phr00t WAN2.2-14B-Rapid-AllInOne • Image-to-Video</p>
+    </div>
+
+    <!-- 1. 사전 준비 -->
+    <div class="section">
+        <h2>1. 사전 준비 (Linux / RunPod)</h2>
+        <pre><code># huggingface-cli 설치 (최초 1회만 실행)
+pip install -U huggingface_hub</code></pre>
+    </div>
+
+    <!-- 2. 모델 다운로드 -->
+    <div class="section">
+        <h2>2. 모델 다운로드 (v10 NSFW I2V)</h2>
+        
+        <pre><code>huggingface-cli download Phr00t/WAN2.2-14B-Rapid-AllInOne \
+  --include "v10/wan2.2-i2v-rapid-aio-v10-nsfw.safetensors" \
+  --local-dir /workspace/ComfyUI/models/checkpoints</code></pre>
+
+        <p><strong>다운로드 후 파일 위치:</strong></p>
+        <pre><code>/workspace/ComfyUI/models/checkpoints/v10/wan2.2-i2v-rapid-aio-v10-nsfw.safetensors</code></pre>
+    </div>
+
+    <!-- 3. 워크플로우 -->
+    <div class="section">
+        <h2>3. 워크플로우</h2>
+        <p>Phr00t이 제공하는 공식 예시 워크플로우를 사용하세요:</p>
+        
+        <a href="https://huggingface.co/Phr00t/WAN2.2-14B-Rapid-AllInOne/blob/main/wan2.2-i2v-rapid-aio-example.json" 
+           target="_blank" class="workflow-btn">
+            워크플로우 열기 (wan2.2-i2v-rapid-aio-example.json)
+        </a>
+
+        <p style="margin-top: 16px; color: #94a3b8;">
+            ※ 워크플로우를 불러온 후, <strong>Load Checkpoint</strong> 노드에서 위에서 다운받은 NSFW 모델을 선택하세요.
+        </p>
+    </div>
+
+    <!-- 4. VRAM 요구사항 -->
+    <div class="section">
+        <h2>4. VRAM 요구사항</h2>
+        
+        <div style="background-color: #1e3a8a; border-left: 5px solid #3b82f6; padding: 18px 22px; border-radius: 10px;">
+            <strong>WAN2.2 14B I2V (v10 NSFW)</strong><br><br>
+            • <strong>fp8</strong> 기준: <strong>20~24GB</strong><br>
+            • 안정적으로 사용하려면 <strong>24GB 이상</strong> GPU 권장<br>
+            • 720p 기준에서 위 사양을 추천합니다.
+        </div>
+    </div>
+
+    <!-- 5. 파일 저장 경로 요약 -->
+    <div class="section">
+        <h2>5. 파일 저장 경로 요약</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>항목</th>
+                    <th>저장 경로</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>WAN2.2 I2V NSFW (v10)</strong></td>
+                    <td><code>/workspace/ComfyUI/models/checkpoints/v10/</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
