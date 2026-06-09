@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RunPod • Qwen vs PixelDiT 가이드</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
         :root {
             --bg: #0f172a;
@@ -165,30 +165,22 @@
         <p class="subtitle">Qwen Image Edit vs PixelDiT • ComfyUI</p>
     </div>
 
-    <!-- 1. 사전 준비 -->
     <div class="section">
         <h2>1. 사전 준비 (Linux / RunPod)</h2>
-        <pre><code># huggingface-cli 설치 (최초 1회만 실행)
+        <pre><code># hf 명령어 사용을 위한 허깅페이스 허브 설치
 pip install -U huggingface_hub</code></pre>
     </div>
 
-    <!-- 2. Qwen Image Edit -->
     <div class="section">
         <h2>2. Qwen Image Edit (Rapid-AIO v23)</h2>
 
         <h3>다운로드</h3>
-        <pre><code>huggingface-cli download Phr00t/Qwen-Image-Edit-Rapid-AIO \
-  --include "Qwen-Rapid-AIO-NSFW-v23.safetensors" \
-  --local-dir /workspace/ComfyUI/models/checkpoints</code></pre>
+        <pre><code>hf download Phr00t/Qwen-Image-Edit-Rapid-AIO \
+  --include "v23/Qwen-Rapid-AIO-NSFW-v23.safetensors" \
+  --local-dir /workspace/runpod-slim/ComfyUI/models/checkpoints</code></pre>
 
         <h3>커스텀 노드 설치</h3>
-        <pre><code>cd /workspace/ComfyUI/custom_nodes
-
-git clone https://github.com/Comfy-Org/ComfyUI-Manager.git
-cd ComfyUI-Manager
-pip install -r requirements.txt</code></pre>
-
-        <p>ComfyUI를 재시작한 후, <strong>ComfyUI Manager</strong>에서 <code>TextEncodeQwenImageEditPlus</code> 검색 후 설치하세요.</p>
+        <p><strong>ComfyUI Manager</strong>에서 <code>Comfyui-QwenEditUtils</code> 검색 후 설치하세요.</p>
 
         <h3>워크플로우</h3>
         <a href="https://huggingface.co/Phr00t/Qwen-Image-Edit-Rapid-AIO/blob/main/Qwen-Rapid-AIO.json"
@@ -203,20 +195,19 @@ pip install -r requirements.txt</code></pre>
         </div>
     </div>
 
-    <!-- 3. PixelDiT -->
     <div class="section">
         <h2>3. PixelDiT 설치</h2>
 
         <h3>다운로드</h3>
         <pre><code># 메인 모델
-huggingface-cli download Comfy-Org/PixelDiT \
+hf download Comfy-Org/PixelDiT \
   --include "pixeldit_1300m_1024px_bf16.safetensors" \
-  --local-dir /workspace/ComfyUI/models/diffusion_models
+  --local-dir /workspace/runpod-slim/ComfyUI/models/diffusion_models
 
 # 텍스트 인코더
-huggingface-cli download Comfy-Org/PixelDiT \
+hf download Comfy-Org/PixelDiT \
   --include "gemma_2_2b_it_elm_bf16.safetensors" \
-  --local-dir /workspace/ComfyUI/models/text_encoders</code></pre>
+  --local-dir /workspace/runpod-slim/ComfyUI/models/text_encoders</code></pre>
 
         <h3>워크플로우</h3>
         <a href="https://github.com/Comfy-Org/workflow_templates/blob/main/templates/image_pixeldit_t2i.json"
@@ -231,7 +222,6 @@ huggingface-cli download Comfy-Org/PixelDiT \
         </div>
     </div>
 
-    <!-- 파일 저장 경로 요약 -->
     <div class="section">
         <h2>파일 저장 경로 요약</h2>
         <table>
@@ -244,15 +234,15 @@ huggingface-cli download Comfy-Org/PixelDiT \
             <tbody>
                 <tr>
                     <td><strong>Qwen-Rapid-AIO v23</strong></td>
-                    <td><code>/workspace/ComfyUI/models/checkpoints/</code></td>
+                    <td><code>/workspace/runpod-slim/ComfyUI/models/checkpoints/</code></td>
                 </tr>
                 <tr>
                     <td><strong>PixelDiT 본체</strong></td>
-                    <td><code>/workspace/ComfyUI/models/diffusion_models/</code></td>
+                    <td><code>/workspace/runpod-slim/ComfyUI/models/diffusion_models/</code></td>
                 </tr>
                 <tr>
                     <td><strong>Gemma 텍스트 인코더</strong></td>
-                    <td><code>/workspace/ComfyUI/models/text_encoders/</code></td>
+                    <td><code>/workspace/runpod-slim/ComfyUI/models/text_encoders/</code></td>
                 </tr>
             </tbody>
         </table>
