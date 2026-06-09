@@ -163,7 +163,7 @@
         }
         
         li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
     </style>
 </head>
@@ -199,13 +199,36 @@ cd ..</code></pre>
     </div>
 
     <div class="section">
-        <h2>2. 모델 다운로드 사전 준비</h2>
+        <h2>2. ComfyUI 실행 및 웹 접속 방법</h2>
+
+        <h3>① 서버 실행 (RunPod 터미널)</h3>
+        <p>외부 접속 허용 옵션(<code>--listen</code>)을 붙여 서버를 구동합니다.</p>
+        <pre><code>cd /workspace/ComfyUI
+python main.py --listen 0.0.0.0 --port 8188</code></pre>
+
+        <h3>② 브라우저 접속 방법 (택 1)</h3>
+        <ul>
+            <li>
+                <strong>방법 1: RunPod 포트 개방 (가장 추천 ⭐)</strong><br>
+                Pod 전원 종료(<code>Stop</code>) → <code>Edit Pod</code> 클릭 → <code>Expose HTTP Ports</code> 칸에 <code>8188</code> 추가 (예: <code>8888,8188</code>) → 저장 후 Pod 켜기(<code>Start</code>) → 터미널에서 ComfyUI 다시 실행 → 대시보드의 <code>Connect</code> 메뉴에서 <strong>HTTP Service [Port 8188]</strong> 파란 버튼을 클릭하여 바로 접속합니다.
+            </li>
+            <li>
+                <strong>방법 2: SSH 포트 포워딩 (인증 오류 발생 시 대안)</strong><br>
+                본인 개인 PC 터미널을 열고, 터미널 복사 주소 중간에 포트 포워딩 옵션을 추가하여 진입합니다.<br>
+                <code>ssh -L 8188:127.0.0.1:8188 root@[IP주소] -p [포트번호]</code><br>
+                개인키(Identity 파일) 지정이 필요한 경우 끝에 <code>-i ~/.ssh/id_ed25519</code>를 붙여 로그인 상태를 유지한 뒤, 브라우저 주소창에 <code>http://localhost:8188</code>을 입력합니다.
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>3. 모델 다운로드 사전 준비</h2>
         <pre><code># hf 명령어 사용을 위한 허깅페이스 허브 설치
 pip install -U huggingface_hub</code></pre>
     </div>
 
     <div class="section">
-        <h2>3. Qwen Image Edit (Rapid-AIO v23)</h2>
+        <h2>4. Qwen Image Edit (Rapid-AIO v23)</h2>
 
         <h3>다운로드</h3>
         <pre><code>hf download Phr00t/Qwen-Image-Edit-Rapid-AIO \
@@ -229,7 +252,7 @@ pip install -U huggingface_hub</code></pre>
     </div>
 
     <div class="section">
-        <h2>4. PixelDiT 설치</h2>
+        <h2>5. PixelDiT 설치</h2>
 
         <h3>다운로드</h3>
         <pre><code># 메인 모델
@@ -253,44 +276,6 @@ hf download Comfy-Org/PixelDiT \
             • bf16 버전 기준: <strong>10~14GB</strong><br>
             • mxfp8 버전 사용 시 <strong>8~12GB</strong>에서도 동작 가능
         </div>
-    </div>
-
-    <div class="section">
-        <h2>5. ComfyUI 실행 및 접속 방법</h2>
-
-        <h3>① 실행하기 (터미널)</h3>
-        <p>RunPod 웹 터미널이나 JupyterLab 터미널에서 아래 명령어를 입력하여 ComfyUI를 실행합니다. 이때 외부 접속을 허용하는 <code>--listen</code> 옵션을 반드시 붙여야 합니다.</p>
-        <pre><code># 1. ComfyUI 폴더로 이동
-cd /workspace/ComfyUI
-
-# 2. 외부 접속 허용(--listen) 및 포트 지정하여 실행
-python main.py --listen 0.0.0.0 --port 8188</code></pre>
-        <p>실행이 정상적으로 되면 터미널 맨 아래쪽에 <code>To see the GUI go to: http://0.0.0.0:8188</code> 주소가 뜨며 대기 상태가 됩니다.</p>
-
-        <h3>② 접속 방법 1: 포트 개방으로 1초 만에 접속하기 (⭐ 가장 추천)</h3>
-        <p>SSH 터미널 창을 계속 켜두는 번거로움 없이, RunPod 설정에 포트 하나만 추가해주면 대시보드에서 클릭 한 번으로 ComfyUI 웹 창을 띄울 수 있습니다.</p>
-        <ol>
-            <li>RunPod 대시보드에서 현재 Pod의 전원을 잠시 끕니다 (<strong>Stop</strong>).</li>
-            <li>Pod의 톱니바퀴 모양 아이콘(<strong>Edit Pod</strong> 또는 설정)을 클릭합니다.</li>
-            <li>중간쯤에 있는 <strong>Expose HTTP Ports</strong> 칸을 찾습니다.</li>
-            <li>기존에 포트 번호가 적혀 있다면 쉼표 뒤에 <code>8188</code>을 추가합니다. (예: <code>8888,8188</code> 또는 그냥 <code>8188</code>)</li>
-            <li>설정을 저장하고 Pod를 다시 켭니다 (<strong>Start</strong>).</li>
-            <li>Web Terminal로 들어가서 똑같이 <code>python main.py --listen 0.0.0.0 --port 8188</code>을 실행합니다.</li>
-            <li>이제 RunPod 대시보드에서 <strong>Connect</strong> 버튼을 눌러보세요. <strong>HTTP Service [Port 8188]</strong> 이라는 파란 버튼이 예쁘게 생겨 있을 겁니다. 이걸 누르면 맥북 터미널을 거칠 필요 없이 바로 ComfyUI 브라우저가 열립니다!</li>
-        </ol>
-
-        <h3>③ 접속 방법 2: SSH 포트 포워딩 이용 (치트키)</h3>
-        <p>네트워크가 완전히 막혀 있어 위 방법으로 접속이 안 될 때 사용하는 가장 확실한 방법입니다.</p>
-        <ol>
-            <li>RunPod 대시보드에서 <strong>Connect</strong>를 누르고 <strong>SSH Command</strong> 주소를 복사합니다.<br>
-                <span style="color: #94a3b8; font-size: 0.9em;">예: <code>ssh root@64.xx.xx.xx -p 32123</code></span>
-            </li>
-            <li>내 실제 개인 PC의 터미널(Windows는 cmd창, Mac은 터미널)을 엽니다.</li>
-            <li>복사한 명령어 중간에 <code>-L 8188:127.0.0.1:8188</code>을 끼워 넣어서 실행하고 연결(로그인)합니다.<br>
-                <span style="color: #94a3b8; font-size: 0.9em;">입력 예시: <code>ssh -L 8188:127.0.0.1:8188 root@64.xx.xx.xx -p 32123</code></span>
-            </li>
-            <li>로그인이 완료되면 그 터미널 창을 <strong>그대로 켜둔 상태</strong>에서, 내 PC 인터넷 브라우저 주소창에 <strong><code>http://localhost:8188</code></strong>을 입력하면 ComfyUI 화면이 열립니다.</li>
-        </ol>
     </div>
 
     <div class="section">
