@@ -218,8 +218,8 @@ python main.py --listen 0.0.0.0 --port 8188</code></pre>
 echo "여기에_복사한_공개키를_붙여넣으세요" >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys</code></pre>
             </li>
-            <li>이제 다시 <strong>맥북 터미널</strong>로 돌아가서 포트 포워딩 접속 명령어를 치시면, 비밀번호를 묻지 않고 스르륵 접속이 될 겁니다!
-                <pre><code>ssh -L 8188:127.0.0.1:8188 root@[IP주소] -p [포트번호] -i ~/.ssh/id_ed25519</code></pre>
+            <li>이제 다시 <strong>맥북 터미널</strong>로 돌아가서 ssh 다음에 아래 줄을 추가해서 엔터하면 얼림.
+                <pre><code>-L 8188:127.0.0.1:8188</code></pre>
             </li>
             <li>로그인이 완료되어 터미널 창이 켜진 상태에서, 내 PC 인터넷 브라우저 주소창에 <strong><code>http://localhost:8188</code></strong>을 입력하면 ComfyUI 화면이 열립니다.</li>
         </ol>
