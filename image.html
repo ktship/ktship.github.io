@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RunPod • Qwen 2511 & PixelDiT 가이드</title>
+    <title>RunPod • Qwen 2511 & PixelDiT 통합 가이드</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -47,14 +47,6 @@
             color: #f1f5f9;
             padding-bottom: 8px;
             border-bottom: 2px solid #334155;
-        }
-
-        h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #cbd5e1;
-            margin-top: 32px;
-            margin-bottom: 12px;
         }
 
         .section {
@@ -161,24 +153,29 @@
 <body>
 
     <div class="header">
-        <h1>RunPod 고급 설정 가이드</h1>
-        <p class="subtitle">Qwen-Image-Edit 2511 및 PixelDiT 모델 빌드 패키지</p>
+        <h1>RunPod 고급 자동화 설정 가이드</h1>
+        <p class="subtitle">Qwen-Image-Edit 2511 및 PixelDiT 원클릭 구축 패키지</p>
     </div>
 
     <div class="section">
-        <h2>1. RunPod 전용 경로 설정 (심볼릭 링크)</h2>
-        <p>RunPod의 영구 스토리지 경로(<code>runpod-slim</code>)와 ComfyUI 기본 작업 경로를 매핑하여 영구 보존 환경을 구축합니다.</p>
-        <pre><code># 기존에 잘못 생성된 디렉토리가 있다면 제거 후 대형 스토리지 볼륨 링크 생성
-rm -rf /workspace/ComfyUI
-ln -s /workspace/runpod-slim/ComfyUI/ /workspace/ComfyUI</code></pre>
-    </div>
-
-    <div class="section">
-        <h2>2. 필수 커스텀 노드 및 종속성 패키지 설치</h2>
-        <p>멀티앵글 제어, UI 편의성, 레이어 전처리를 원활하게 수행하기 위한 핵심 커스텀 노드 패키지 구성입니다.</p>
+        <h2>1. 원클릭 통합 환경 구축 쉘 스크립트</h2>
+        <p>아래 스크립트 블록 전체를 복사하여 RunPod 터미널에 붙여넣으면 <strong>경로 링크 생성, 필수 커스텀 노드 설치, 라이브러리 종속성 해결, Qwen 2511 최신 모델 에코시스템 다운로드 및 경로 정돈</strong>까지 한 번에 완료됩니다.</p>
         
-        <h3>① 커스텀 노드 패키지 다운로드</h3>
-        <pre><code>cd /workspace/ComfyUI/custom_nodes
+        <pre><code>#!/bin/bash
+
+# ==========================================
+# 0. 경로 심볼릭 링크 생성 (RunPod 전용 경로 연결)
+# ==========================================
+echo "=== [0/4] ComfyUI 경로 심볼릭 링크 생성 중... ==="
+rm -rf /workspace/ComfyUI
+ln -s /workspace/runpod-slim/ComfyUI/ /workspace/ComfyUI
+
+
+# ==========================================
+# 1. 필수 커스텀 노드 패키지 설치
+# ==========================================
+echo "=== [1/4] 커스텀 노드 다운로드 중... ==="
+cd /workspace/ComfyUI/custom_nodes
 
 # Qwen 멀티앵글 카메라 제어 노드 설치
 git clone https://github.com/jtydhr88/ComfyUI-qwenmultiangle.git
@@ -187,20 +184,24 @@ git clone https://github.com/jtydhr88/ComfyUI-qwenmultiangle.git
 git clone https://github.com/yolain/ComfyUI-Easy-Use.git
 
 # LayerStyle 전처리 패키지 설치
-git clone https://github.com/chflame163/ComfyUI_LayerStyle.git</code></pre>
+git clone https://github.com/chflame163/ComfyUI_LayerStyle.git
 
-        <h3>② 종속성 Python 라이브러리 설치</h3>
-        <pre><code>pip install -r ComfyUI-Easy-Use/requirements.txt
+
+# ==========================================
+# 2. 종속성 라이브러리 패키지 설치
+# ==========================================
+echo "=== [2/4] 종속성 Python 라이브러리 설치 중... ==="
+pip install -r ComfyUI-Easy-Use/requirements.txt
 pip install -r ComfyUI_LayerStyle/requirements.txt
-pip install -U "huggingface_hub[cli]"</code></pre>
-    </div>
+pip install -U "huggingface_hub[cli]"
 
-    <div class="section">
-        <h2>3. Qwen-Image-Edit 2511 에코시스템 설치</h2>
-        <p>다각도 생성 및 지능형 이미지 편집을 통합 지원하는 Qwen 2511 에코시스템 컴포넌트 설치 및 하위 폴더 자동 정리 단계입니다.</p>
 
-        <h3>① Hugging Face 모델 일괄 다운로드</h3>
-        <pre><code># 1. 메인 모델 (Qwen Image Edit 2511 - FP8 Mixed)
+# ==========================================
+# 3. 모델 파일 다운로드 (hf download)
+# ==========================================
+echo "=== [3/4] Hugging Face에서 모델 다운로드 중... ==="
+
+# 1. 메인 모델 (Qwen Image Edit 2511 - FP8 Mixed)
 hf download \
   Comfy-Org/Qwen-Image-Edit_ComfyUI \
   split_files/diffusion_models/qwen_image_edit_2511_fp8mixed.safetensors \
@@ -228,68 +229,51 @@ hf download \
 hf download \
   fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA \
   qwen-image-edit-2511-multiple-angles-lora.safetensors \
-  --local-dir /workspace/ComfyUI/models/loras</code></pre>
+  --local-dir /workspace/ComfyUI/models/loras
 
-        <h3>② 분할 파일(split_files) 구조 정리정돈</h3>
-        <p>다운로드 중 생성된 구조적 하위 폴더(split_files) 내 파일들을 ComfyUI 규격 경로로 상위 이동시킵니다.</p>
-        <pre><code>mv /workspace/ComfyUI/models/diffusion_models/split_files/diffusion_models/* /workspace/ComfyUI/models/diffusion_models/ 2>/dev/null
+
+# ==========================================
+# 4. 분할 파일(split_files) 경로 정리정돈
+# ==========================================
+echo "=== [4/4] 하위 폴더에 담긴 모델들 위치 정리 중... ==="
+mv /workspace/ComfyUI/models/diffusion_models/split_files/diffusion_models/* /workspace/ComfyUI/models/diffusion_models/ 2>/dev/null
 mv /workspace/ComfyUI/models/text_encoders/split_files/text_encoders/* /workspace/ComfyUI/models/text_encoders/ 2>/dev/null
-mv /workspace/ComfyUI/models/vae/split_files/vae/* /workspace/ComfyUI/models/vae/ 2>/dev/null</code></pre>
+mv /workspace/ComfyUI/models/vae/split_files/vae/* /workspace/ComfyUI/models/vae/ 2>/dev/null
+
+echo "=== 모든 설치가 완벽히 완료되었습니다! ComfyUI 서버를 재시작해 주세요. ==="</code></pre>
     </div>
 
     <div class="section">
-        <h2>4. Qwen Image Edit (Rapid-AIO v23) 레거시</h2>
+        <h2>2. Qwen Image Edit (Rapid-AIO v23) 레거시 및 PixelDiT 추가 설치</h2>
+        <p>필요에 따라 아래 개별 추가 모델 및 워크플로우를 활용할 수 있습니다.</p>
 
-        <h3>다운로드</h3>
-        <pre><code>hf download Phr00t/Qwen-Image-Edit-Rapid-AIO \
-  --include "v23/Qwen-Rapid-AIO-NSFW-v23.safetensors" \
-  --local-dir /workspace/ComfyUI/models/checkpoints</code></pre>
-
-        <h3>커스텀 노드 설치</h3>
-        <p><strong>ComfyUI Manager</strong>에서 <code>Comfyui-QwenEditUtils</code> 검색 후 설치하세요.</p>
-
-        <h3>워크플로우</h3>
+        <h3>① Qwen Image Edit (Rapid-AIO v23)</h3>
+        <pre><code>hf download Phr00t/Qwen-Image-Edit-Rapid-AIO   --include "v23/Qwen-Rapid-AIO-NSFW-v23.safetensors"   --local-dir /workspace/ComfyUI/models/checkpoints</code></pre>
+        <p>※ <strong>ComfyUI Manager</strong>에서 <code>Comfyui-QwenEditUtils</code> 검색 후 수동 설치가 필요합니다.</p>
         <a href="https://huggingface.co/Phr00t/Qwen-Image-Edit-Rapid-AIO/blob/main/Qwen-Rapid-AIO.json"
            target="_blank" class="workflow-btn">
             워크플로우 열기 (Qwen-Rapid-AIO.json)
         </a>
 
-        <div class="vram-box">
-            <strong>VRAM 요구사항</strong><br>
-            • FP8 버전 기준: <strong>16~20GB</strong><br>
-            • 안정적으로 사용하려면 <strong>20~24GB 이상</strong> 권장
-        </div>
-    </div>
+        <h3>② PixelDiT 설치</h3>
+        <pre><code># 메인 모델 및 텍스트 인코더 다운로드
+hf download Comfy-Org/PixelDiT   --include "pixeldit_1300m_1024px_bf16.safetensors"   --local-dir /workspace/ComfyUI/models/diffusion_models
 
-    <div class="section">
-        <h2>5. PixelDiT 설치</h2>
-
-        <h3>다운로드</h3>
-        <pre><code># 메인 모델
-hf download Comfy-Org/PixelDiT \
-  --include "pixeldit_1300m_1024px_bf16.safetensors" \
-  --local-dir /workspace/ComfyUI/models/diffusion_models
-
-# 텍스트 인코더
-hf download Comfy-Org/PixelDiT \
-  --include "gemma_2_2b_it_elm_bf16.safetensors" \
-  --local-dir /workspace/ComfyUI/models/text_encoders</code></pre>
-
-        <h3>워크플로우</h3>
+hf download Comfy-Org/PixelDiT   --include "gemma_2_2b_it_elm_bf16.safetensors"   --local-dir /workspace/ComfyUI/models/text_encoders</code></pre>
         <a href="https://github.com/Comfy-Org/workflow_templates/blob/main/templates/image_pixeldit_t2i.json"
            target="_blank" class="workflow-btn">
             워크플로우 열기 (PixelDiT)
         </a>
 
         <div class="vram-box">
-            <strong>VRAM 요구사항</strong><br>
-            • bf16 버전 기준: <strong>10~14GB</strong><br>
-            • mxfp8 버전 사용 시 <strong>8~12GB</strong>에서도 동작 가능
+            <strong>사양 요구사항 가이드</strong><br>
+            • <strong>Qwen-Rapid-AIO v23:</strong> FP8 기준 VRAM 16~20GB (24GB 권장)<br>
+            • <strong>PixelDiT:</strong> bf16 기준 VRAM 10~14GB (mxfp8 사용 시 8~12GB 가능)
         </div>
     </div>
 
     <div class="section">
-        <h2>6. 파일 저장 경로 요약</h2>
+        <h2>3. 파일 저장 경로 요약</h2>
         <table>
             <thead>
                 <tr>
