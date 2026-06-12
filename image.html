@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RunPod • Qwen vs PixelDiT 가이드</title>
+    <title>RunPod • Qwen 2511 & PixelDiT 가이드</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -156,84 +156,89 @@
         .vram-box strong {
             color: #93c5fd;
         }
-        
-        ol, ul {
-            padding-left: 20px;
-            margin-top: 10px;
-        }
-        
-        li {
-            margin-bottom: 12px;
-        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>RunPod 설치 가이드</h1>
-        <p class="subtitle">ComfyUI 기본 세팅부터 Qwen / PixelDiT 모델까지</p>
+        <h1>RunPod 고급 설정 가이드</h1>
+        <p class="subtitle">Qwen-Image-Edit 2511 및 PixelDiT 모델 빌드 패키지</p>
     </div>
 
     <div class="section">
-        <h2>1. ComfyUI 및 매니저 설치 (Linux / RunPod)</h2>
+        <h2>1. RunPod 전용 경로 설정 (심볼릭 링크)</h2>
+        <p>RunPod의 영구 스토리지 경로(<code>runpod-slim</code>)와 ComfyUI 기본 작업 경로를 매핑하여 영구 보존 환경을 구축합니다.</p>
+        <pre><code># 기존에 잘못 생성된 디렉토리가 있다면 제거 후 대형 스토리지 볼륨 링크 생성
+rm -rf /workspace/ComfyUI
+ln -s /workspace/runpod-slim/ComfyUI/ /workspace/ComfyUI</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>2. 필수 커스텀 노드 및 종속성 패키지 설치</h2>
+        <p>멀티앵글 제어, UI 편의성, 레이어 전처리를 원활하게 수행하기 위한 핵심 커스텀 노드 패키지 구성입니다.</p>
         
-        <h3>① ComfyUI 본체 설치</h3>
-        <pre><code># 1. ComfyUI 깃허브 저장소 복제 (/workspace 등 원하는 경로에서 실행)
-cd /workspace
-git clone https://github.com/comfyanonymous/ComfyUI.git
+        <h3>① 커스텀 노드 패키지 다운로드</h3>
+        <pre><code>cd /workspace/ComfyUI/custom_nodes
 
-# 2. 폴더로 이동
-cd ComfyUI
+# Qwen 멀티앵글 카메라 제어 노드 설치
+git clone https://github.com/jtydhr88/ComfyUI-qwenmultiangle.git
 
-# 3. 필요한 파이썬 패키지 설치
-pip install -r requirements.txt</code></pre>
+# Easy-Use 공식 패키지 설치
+git clone https://github.com/yolain/ComfyUI-Easy-Use.git
 
-        <h3>② ComfyUI Manager 설치 (필수)</h3>
-        <pre><code># 1. 커스텀 노드 폴더로 이동
-cd custom_nodes
+# LayerStyle 전처리 패키지 설치
+git clone https://github.com/chflame163/ComfyUI_LayerStyle.git</code></pre>
 
-# 2. 매니저 저장소 복제
-git clone https://github.com/ltdrdata/ComfyUI-Manager.git
-
-# 3. 원래 폴더(ComfyUI)로 복귀
-cd ..</code></pre>
+        <h3>② 종속성 Python 라이브러리 설치</h3>
+        <pre><code>pip install -r ComfyUI-Easy-Use/requirements.txt
+pip install -r ComfyUI_LayerStyle/requirements.txt
+pip install -U "huggingface_hub[cli]"</code></pre>
     </div>
 
     <div class="section">
-        <h2>2. ComfyUI 실행 및 접속 방법</h2>
+        <h2>3. Qwen-Image-Edit 2511 에코시스템 설치</h2>
+        <p>다각도 생성 및 지능형 이미지 편집을 통합 지원하는 Qwen 2511 에코시스템 컴포넌트 설치 및 하위 폴더 자동 정리 단계입니다.</p>
 
-        <h3>① 서버 실행 (RunPod 터미널)</h3>
-        <p>외부 접속 허용 옵션(<code>--listen</code>)을 붙여 서버를 구동합니다.</p>
-        <pre><code>cd /workspace/ComfyUI
-python main.py --listen 0.0.0.0 --port 8188</code></pre>
+        <h3>① Hugging Face 모델 일괄 다운로드</h3>
+        <pre><code># 1. 메인 모델 (Qwen Image Edit 2511 - FP8 Mixed)
+hf download \
+  Comfy-Org/Qwen-Image-Edit_ComfyUI \
+  split_files/diffusion_models/qwen_image_edit_2511_fp8mixed.safetensors \
+  --local-dir /workspace/ComfyUI/models/diffusion_models
 
-        <h3>② 맥북 SSH 키 수동 등록 및 접속 (현재 방식 유지)</h3>
-        <p>현재 만들어둔 Pod를 그대로 살리면서 맥북 터미널에서 확실하게 접속하고 싶을 때 사용하는 방법입니다.</p>
-        <ol>
-            <li><strong>맥북 터미널</strong>에서 아래 명령어를 입력하여 본인의 '공개키'를 화면에 띄우고, 출력된 텍스트 전체를 복사합니다. (<code>ssh-ed25519 AAA...</code> 로 시작합니다.)
-                <pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
-            </li>
-            <li><strong>RunPod 웹 대시보드</strong>로 이동하여 해당 Pod의 <strong>Connect</strong> 버튼을 누르고, <strong>Start Web Terminal</strong>을 클릭해 브라우저용 까만 터미널 창을 엽니다.</li>
-            <li>Web Terminal 창에 아래 명령어를 복사해서 붙여넣습니다. (두 번째 줄의 따옴표 <code>""</code> 사이에 아까 복사한 공개키를 넣으시면 됩니다.)
-                <pre><code>mkdir -p ~/.ssh
-echo "ssh" >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys</code></pre>
-            </li>
-            <li>이제 다시 <strong>맥북 터미널</strong>로 돌아가서 ssh 다음에 아래 줄을 추가해서 엔터하면 얼림.
-                <pre><code>-L 8188:127.0.0.1:8188</code></pre>
-            </li>
-            <li>로그인이 완료되어 터미널 창이 켜진 상태에서, 내 PC 인터넷 브라우저 주소창에 <strong><code>http://localhost:8188</code></strong>을 입력하면 ComfyUI 화면이 열립니다.</li>
-        </ol>
+# 2. 라이트닝 로라 (4스텝 고속 생성용 - FP32 프리시전)
+hf download \
+  lightx2v/Qwen-Image-Edit-2511-Lightning \
+  Qwen-Image-Edit-2511-Lightning-4steps-V1.0-fp32.safetensors \
+  --local-dir /workspace/ComfyUI/models/loras
+
+# 3. 텍스트 인코더 (Qwen 2.5 VL 7B FP8 Scaled)
+hf download \
+  Comfy-Org/Qwen-Image_ComfyUI \
+  split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors \
+  --local-dir /workspace/ComfyUI/models/text_encoders
+
+# 4. VAE (Qwen Image VAE)
+hf download \
+  Comfy-Org/Qwen-Image_ComfyUI \
+  split_files/vae/qwen_image_vae.safetensors \
+  --local-dir /workspace/ComfyUI/models/vae
+
+# 5. 다각도 뷰 로라 (Multiple Angles LoRA)
+hf download \
+  fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA \
+  qwen-image-edit-2511-multiple-angles-lora.safetensors \
+  --local-dir /workspace/ComfyUI/models/loras</code></pre>
+
+        <h3>② 분할 파일(split_files) 구조 정리정돈</h3>
+        <p>다운로드 중 생성된 구조적 하위 폴더(split_files) 내 파일들을 ComfyUI 규격 경로로 상위 이동시킵니다.</p>
+        <pre><code>mv /workspace/ComfyUI/models/diffusion_models/split_files/diffusion_models/* /workspace/ComfyUI/models/diffusion_models/ 2>/dev/null
+mv /workspace/ComfyUI/models/text_encoders/split_files/text_encoders/* /workspace/ComfyUI/models/text_encoders/ 2>/dev/null
+mv /workspace/ComfyUI/models/vae/split_files/vae/* /workspace/ComfyUI/models/vae/ 2>/dev/null</code></pre>
     </div>
 
     <div class="section">
-        <h2>3. 모델 다운로드 사전 준비</h2>
-        <pre><code># hf 명령어 사용을 위한 허깅페이스 허브 설치
-pip install -U huggingface_hub</code></pre>
-    </div>
-
-    <div class="section">
-        <h2>4. Qwen Image Edit (Rapid-AIO v23)</h2>
+        <h2>4. Qwen Image Edit (Rapid-AIO v23) 레거시</h2>
 
         <h3>다운로드</h3>
         <pre><code>hf download Phr00t/Qwen-Image-Edit-Rapid-AIO \
@@ -288,22 +293,51 @@ hf download Comfy-Org/PixelDiT \
         <table>
             <thead>
                 <tr>
-                    <th>모델</th>
-                    <th>저장 경로</th>
+                    <th>모델 구성 요소</th>
+                    <th>파일명</th>
+                    <th>정밀 저장 경로</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>Qwen-Rapid-AIO v23</strong></td>
+                    <td><strong>Qwen-Rapid-AIO v23 (체크포인트)</strong></td>
+                    <td><code>Qwen-Rapid-AIO-NSFW-v23.safetensors</code></td>
                     <td><code>/workspace/ComfyUI/models/checkpoints/</code></td>
                 </tr>
                 <tr>
-                    <td><strong>PixelDiT 본체</strong></td>
+                    <td><strong>Qwen 2511 메인 확산 모델</strong></td>
+                    <td><code>qwen_image_edit_2511_fp8mixed.safetensors</code></td>
                     <td><code>/workspace/ComfyUI/models/diffusion_models/</code></td>
                 </tr>
                 <tr>
-                    <td><strong>Gemma 텍스트 인코더</strong></td>
+                    <td><strong>PixelDiT 본체 확산 모델</strong></td>
+                    <td><code>pixeldit_1300m_1024px_bf16.safetensors</code></td>
+                    <td><code>/workspace/ComfyUI/models/diffusion_models/</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Qwen 2.5 VL 7B 텍스트 인코더</strong></td>
+                    <td><code>qwen_2.5_vl_7b_fp8_scaled.safetensors</code></td>
                     <td><code>/workspace/ComfyUI/models/text_encoders/</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Gemma 텍스트 인코더 (PixelDiT용)</strong></td>
+                    <td><code>gemma_2_2b_it_elm_bf16.safetensors</code></td>
+                    <td><code>/workspace/ComfyUI/models/text_encoders/</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Qwen 이미지 전용 VAE</strong></td>
+                    <td><code>qwen_image_vae.safetensors</code></td>
+                    <td><code>/workspace/ComfyUI/models/vae/</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Qwen 2511 라이트닝 LoRA (4Step)</strong></td>
+                    <td><code>Qwen-Image-Edit-2511-Lightning-4steps-V1.0-fp32.safetensors</code></td>
+                    <td><code>/workspace/ComfyUI/models/loras/</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Qwen 다각도 뷰 제어 LoRA</strong></td>
+                    <td><code>qwen-image-edit-2511-multiple-angles-lora.safetensors</code></td>
+                    <td><code>/workspace/ComfyUI/models/loras/</code></td>
                 </tr>
             </tbody>
         </table>
