@@ -77,13 +77,18 @@ wget -c -O gemma3_ltx_text.safetensors "https://huggingface.co/Pavpif/ltx2-gemma
             <div class="mb-6">
                 <h3 class="text-lg font-semibold text-gray-200 mb-2">1-4. 멀티모달 VAE (Video & Audio VAE)</h3>
                 <p class="text-sm text-gray-400 mb-2">영상 픽셀을 제어하는 Video VAE와 비디오 내부 음향을 구현하는 Audio VAE 세트입니다.</p>
-                <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm text-green-400 font-mono"><button class="copy-btn" onclick="copyText(this)">복사</button><code>cd /workspace/ComfyUI/models/vae/
+                <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm text-green-400 font-mono"><button class="copy-btn" onclick="copyText(this)">복사</button>
+<code>cd /workspace/ComfyUI/models/vae/
 
 # 영상(비디오)용 VAE
 wget -c -O ltx_video_vae.safetensors "https://huggingface.co/Lightricks/LTX-2/resolve/main/vae/diffusion_pytorch_model.safetensors?download=true"
 
 # 음성(오디오)용 VAE
-wget -c -O ltx_audio_vae.safetensors "https://huggingface.co/Lightricks/LTX-2/resolve/main/audio_vae/diffusion_pytorch_model.safetensors?download=true"</code></pre>
+wget -c -O ltx_audio_vae.safetensors "https://huggingface.co/Lightricks/LTX-2/resolve/main/audio_vae/diffusion_pytorch_model.safetensors?download=true"
+
+wget -O /workspace/ComfyUI/models/loras/ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors "https://huggingface.co/SulphurAI/Sulphur-2-base/resolve/main/distill_loras/ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors?download=true" && \
+wget -O /workspace/ComfyUI/models/loras/sulphur_lora_rank_768.safetensors "https://huggingface.co/SulphurAI/Sulphur-2-base/resolve/main/sulphur_lora_rank_768.safetensors?download=true"
+</code></pre>
             </div>
 
             <!-- 1-5 -->
