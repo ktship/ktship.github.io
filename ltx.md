@@ -4,16 +4,31 @@ RunPod, Vast.ai 등 워크스페이스(`/workspace`) 환경에서 ComfyUI 내부
 
 ---
 
+## 0. 사전 준비 — huggingface_hub 설치
+
+`huggingface-cli`가 없는 경우 먼저 설치합니다.
+
+```bash
+pip install -U huggingface_hub
+hf version  # hf 명령어 확인
+```
+
+---
+
 ## 1. Sulphur 주 모델 (Checkpoints) 다운로드
 
-사용 환경의 VRAM 사양에 맞춰 절대 경로 옵션이 지정된 wget 명령어를 선택하여 터미널에 입력하세요.
+사용 환경의 VRAM 사양에 맞춰 아래 명령어를 선택하여 터미널에 입력하세요.
 
 ```bash
 # 옵션 A (압축 안 한 순정 bf16, VRAM 32G 이상 권장)
-wget -c -O /workspace/ComfyUI/models/checkpoints/sulphur_dev_bf16_model.safetensors "https://huggingface.co/vantagewithai/Sulphur-2-Base-Split/resolve/main/model/sulphur_dev_bf16_model.safetensors"
+hf download vantagewithai/Sulphur-2-Base-Split \
+  model/sulphur_dev_bf16_model.safetensors \
+  --local-dir /workspace/ComfyUI/models/checkpoints
 
 # 옵션 B (FP8 경량화 버전, VRAM 16G~24G 환경용)
-wget -c -O /workspace/ComfyUI/models/checkpoints/ltx-2.3-22b-dev-fp8.safetensors "https://huggingface.co/SulphurAI/Sulphur-2-base/resolve/main/ltx-2.3-22b-dev-fp8.safetensors?download=true"
+hf download SulphurAI/Sulphur-2-base \
+  ltx-2.3-22b-dev-fp8.safetensors \
+  --local-dir /workspace/ComfyUI/models/checkpoints
 ```
 
 ---
@@ -23,8 +38,10 @@ wget -c -O /workspace/ComfyUI/models/checkpoints/ltx-2.3-22b-dev-fp8.safetensors
 워크플로우 구동 및 증류(Distilled) 가속을 위해 필수적인 로라 2종을 로라 절대 경로(`/workspace/ComfyUI/models/loras/`)로 다운로드합니다.
 
 ```bash
-wget -O /workspace/ComfyUI/models/loras/ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors "https://huggingface.co/SulphurAI/Sulphur-2-base/resolve/main/distill_loras/ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors?download=true" && \
-wget -O /workspace/ComfyUI/models/loras/sulphur_lora_rank_768.safetensors "https://huggingface.co/SulphurAI/Sulphur-2-base/resolve/main/sulphur_lora_rank_768.safetensors?download=true"
+hf download SulphurAI/Sulphur-2-base \
+  distill_loras/ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors \
+  sulphur_lora_rank_768.safetensors \
+  --local-dir /workspace/ComfyUI/models/loras
 ```
 
 ---
@@ -57,4 +74,45 @@ echo "=========================================="
 echo " 모든 커스텀 노드 다운로드가 완료되었습니다! "
 echo " ComfyUI 서버를 재시작해 주세요.           "
 echo "=========================================="
+```
+
+---
+
+## 4. 공간 업스케일러 (Spatial Upscaler) 다운로드
+
+저해상도 비디오를 화질 저하 없이 1080p, 4K 등 영화급 화질로 업스케일하는 전용 모델입니다.
+
+```bash
+# 2배 업스케일러 v1.1
+hf download Lightricks/LTX-2.3 \
+  ltx-2.3-spatial-upscaler-x2-1.1.safetensors \
+  --local-dir /workspace/ComfyUI/models/upscale_models
+
+# 1.5배 업스케일러
+hf download Lightricks/LTX-2.3 \
+  ltx-2.3-spatial-upscaler-x1.5-1.0.safetensors \
+  --local-dir /workspace/ComfyUI/models/upscale_models
+```
+
+---
+
+## 5. 텍스트 인코더 & VAE 다운로드
+
+```bash
+# 텍스트 인코더 (Gemma3 기반)
+hf download Pavpif/ltx2-gemma3-text-encoder \
+  model_gemma_3_12B_it_fp8_e4m3fn.safetensors \
+  --local-dir /workspace/ComfyUI/models/text_encoders
+
+# 영상(비디오)용 VAE
+hf download Lightricks/LTX-2 \
+  vae/diffusion_pytorch_model.safetensors \
+  --local-dir /workspace/ComfyUI/models/vae \
+  --local-dir-use-symlinks False
+
+# 음성(오디오)용 VAE
+hf download Lightricks/LTX-2 \
+  audio_vae/diffusion_pytorch_model.safetensors \
+  --local-dir /workspace/ComfyUI/models/vae \
+  --local-dir-use-symlinks False
 ```
