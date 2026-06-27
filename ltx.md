@@ -1,6 +1,6 @@
 # LTX-Video 2.3 & Sulphur 환경 구축 스크립트
 
-RunPod, Vast.ai 등 워크스페이스(`/workspace`) 환경에서 ComfyUI 내부 폴더에 직접 모델, 로라, 커스텀 노드를 일괄 경로 지정 방식으로 다운로드하고 설치하는 커맨드 가이드입니다.
+RunPod 워크스페이스(`/workspace`) 환경에서 ComfyUI 내부 폴더에 직접 모델, 로라, 커스텀 노드를 일괄 경로 지정 방식으로 다운로드하고 설치하는 커맨드 가이드.
 
 ---
 
@@ -17,7 +17,7 @@ hf version  # hf 명령어 확인
 
 ---
 
-## 1. Sulphur 주 모델 (Checkpoints) 다운로드
+## 1. 메인 모델 (Checkpoints) 다운로드
 
 사용 환경의 VRAM 사양에 맞춰 아래 명령어를 선택하여 터미널에 입력하세요.
 
@@ -68,31 +68,28 @@ hf download SulphurAI/Sulphur-2-base \
 비디오 제어 및 대형 텍스트 인코더 연산, 세이지 어텐션 패치 등 워크플로우에 필요한 모든 외부 커스텀 노드를 일괄 다운로드하고 종속 패키지를 설치합니다.
 
 ```bash
-# ComfyUI 커스텀 노드 디렉토리로 이동
-cd /workspace/ComfyUI/custom_nodes && \
+# 1. 올바른 ComfyUI 커스텀 노드 디렉토리로 이동
+cd /workspace/runpod-slim/ComfyUI/custom_nodes && \
 
-# 1. 비디오 생성 및 저장 관련 노드 (CreateVideo, SaveVideo)
-git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git && \
+# 2. 커스텀 노드 레포지토리 클론 (이미 존재하면 건너뜀)
+[ -d "ComfyUI-VideoHelperSuite" ] || git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git && \
+[ -d "ComfyUI-KJNodes" ] || git clone https://github.com/Kijai/ComfyUI-KJNodes.git && \
+[ -d "ComfyUI-Custom-Scripts" ] || git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git && \
+[ -d "comfyui-ltxvideo-native" ] || git clone https://github.com/Lightricks/LTX-Video.git comfyui-ltxvideo-native && \
+[ -d "rgthree-comfy" ] || git clone https://github.com/rgthree/rgthree-comfy.git && \
 
-# 2. Sage Attention 패치 노드 (PatchSageAttentionKJ)
-git clone https://github.com/Kijai/ComfyUI-KJNodes.git && \
-
-# 3. 수식 연산 노드 (ComfyMathExpression)
-git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git && \
-
-# 4. LTX-Video 2.3 오디오 통합 전용 노드 스위트
-git clone https://github.com/Lightricks/LTX-Video.git comfyui-ltxvideo-native && \
-
-# 5. rgthree 노드 (Power Lora Loader, Fast Groups Bypasser)
-git clone https://github.com/rgthree/rgthree-comfy.git && \
-
-# 의존성 패키지 설치
+# 3. 의존성 기본 패키지 설치
+pip install wheel setuptools --upgrade && \
 pip install -r ComfyUI-VideoHelperSuite/requirements.txt && \
-pip install -r ComfyUI-KJNodes/requirements.txt
+pip install -r ComfyUI-KJNodes/requirements.txt && \
+
+# 4. 중요: 3090 비디오 가속을 위한 SageAttention 및 필수 패키지 직접 설치
+# (이 단계에서 컴파일 때문에 1~3분 정도 시간이 걸릴 수 있습니다)
+pip install sageattention triton --no-cache-dir
 
 echo "=========================================="
-echo " 모든 커스텀 노드 다운로드가 완료되었습니다! "
-echo " ComfyUI 서버를 재시작해 주세요.           "
+echo " 모든 커스텀 노드 및 의존성 설치가 완료되었습니다! "
+echo " 안심하고 ComfyUI 서버를 재시작해 주세요.   "
 echo "=========================================="
 ```
 
