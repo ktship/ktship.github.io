@@ -275,6 +275,9 @@ echo "=== 핵심 컴포넌트 모델 설치 완료! ==="</pre>
 
   <hr class="divider" />
 
+<!-- ══════════════════════════════════════
+       2. 기능성 & NSFW LoRA 컬렉션
+  ══════════════════════════════════════ -->
   <div class="section">
     <div class="section-header">
       <span class="section-num orange">02</span>
@@ -286,24 +289,45 @@ echo "=== 핵심 컴포넌트 모델 설치 완료! ==="</pre>
         <span class="code-lang">bash</span>
         <button class="copy-btn" onclick="copyCode(this)">copy</button>
       </div>
-      <pre><span class="comment"># ── 1. Qwen-image_NSFW_Adv1</span>
+      <pre><span class="comment"># Qwen-image_NSFW_Adv1</span>
 wget -O /workspace/runpod-slim/ComfyUI/models/loras/Qwen-image_NSFW_Adv1.safetensors "https://civitai.red/api/download/models/2328988?fileId=2219270&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
+<span class="comment"># Sampler: res_2s and Scheduler: bong_tangent</span>
 
-<span class="comment"># ── 2. QW_BreastEnhancer 시리즈 관련 세트</span>
+<span class="comment"># QW_BreastEnhancer</span>
 wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_BreastEnhancer.safetensors "https://civitai.red/api/download/models/2305397?fileId=2196123&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_ButtSlider.safetensors "https://civitai.red/api/download/models/2260485?fileId=2152693&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_BreastBigger.safetensors "https://civitai.red/api/download/models/2567144?fileId=2455406&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_Ahegao.safetensors "https://civitai.red/api/download/models/2209972?fileId=2102957&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
+<span class="comment"># tiny/small/medium/large sized areoles</span>
+<span class="comment"># tiny/small/medium/large sized breasts</span>
+<span class="comment"># pale/brown/dark/ghost areoles</span>
+<span class="comment"># hard/erect nipples</span>
 
-<span class="comment"># ── 3. 연출 및 실사화 특화 모델 세트</span>
+<span class="comment"># QW_ButtSlider</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_ButtSlider.safetensors "https://civitai.red/api/download/models/2260485?fileId=2152693&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
+<span class="comment"># -2.0(Flat) ~ 2.0(Large)</span>
+
+<span class="comment"># QW_BreastBigger</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_BreastBigger.safetensors "https://civitai.red/api/download/models/2567144?fileId=2455406&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
+<span class="comment"># Make your breasts bigger , Lora weight: 1.5-1.2</span>
+
+<span class="comment"># QW_Ahegao</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_Ahegao.safetensors "https://civitai.red/api/download/models/2209972?fileId=2102957&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
+<span class="comment"># making an ahegao face, making an ahegao face with tongue out, making an ahegao face with drool</span>
+
+<span class="comment"># Spit_on_Qwen</span>
 wget -O /workspace/runpod-slim/ComfyUI/models/loras/Spit_on_Qwen.safetensors "https://civitai.red/api/download/models/2205295?fileId=2098226&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
+<span class="comment"># spitting</span>
+
+<span class="comment"># QW_Ani2Real 다운로드</span>
 wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_Ani2Real.safetensors "https://civitai.red/api/download/models/2653480?fileId=2541320&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
+
+<span class="comment"># QW_MCNL 다운로드</span>
 wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_MCNL.safetensors "https://civitai.red/api/download/models/2105899?fileId=2000660&token=8dfbdadb6eb4a3336e4ffcb75697fd07"
+<span class="comment"># Trigger words: nsfw, cum_on_face, blowjob, cowgirlout, creamp1e, penis, l1ck, missionary, nipples, reversecowgirlpov, vagina</span>
 
 echo "=========================================="
 echo " 모든 Civitai 특화 LoRA 다운로드 완료! "
 echo "=========================================="</pre>
     </div>
+  </div>
 
     <div class="card">
       <div class="card-body">
