@@ -37,11 +37,11 @@ hf download fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA \
 
 ## 2. LoRA
 # Qwen-image_NSFW_Adv1
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/Qwen-image_NSFW_Adv1.safetensors "https://civitai.red/api/download/models/2328988?fileId=2219270&token=your_key"
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/Qwen-image_NSFW_Adv1.safetensors "https://civitai.red/api/download/models/2328988?fileId=2219270&token=8dfbdadb6eb4a3336e4ffcb75697fd07"
 # Sampler: res_2s and Scheduler: bong_tangent
 
 # QW_BreastEnhancer
-wget -O "/workspace/ComfyUI/models/loras/QW_BreastEnhancer.safetensors" "https://civitai.red/api/download/models/2305397?fileId=2196123&token=your_key"
+wget -O "/workspace/ComfyUI/models/loras/QW_BreastEnhancer.safetensors" "https://civitai.red/api/download/models/2305397?fileId=2196123&token=8dfbdadb6eb4a3336e4ffcb75697fd07"
 # tiny/small/medium/large sized areoles   
 # tiny/small/medium/large sized breasts  
 # pale/brown/dark/ghost areoles   
@@ -49,26 +49,26 @@ wget -O "/workspace/ComfyUI/models/loras/QW_BreastEnhancer.safetensors" "https:/
 
 
 # QW_ButtSlider
-wget -O "/workspace/ComfyUI/models/loras/QW_ButtSlider.safetensors" "https://civitai.red/api/download/models/2260485?fileId=2152693&token=your_key"
+wget -O "/workspace/ComfyUI/models/loras/QW_ButtSlider.safetensors" "https://civitai.red/api/download/models/2260485?fileId=2152693&token=8dfbdadb6eb4a3336e4ffcb75697fd07"
 # -2.0(Flat) ~ 2.0(Large))
 
 # QW_BreastBigger
-wget -O "/workspace/ComfyUI/models/loras/QW_BreastBigger.safetensors" "https://civitai.red/api/download/models/2567144?fileId=2455406&token=your_key"
+wget -O "/workspace/ComfyUI/models/loras/QW_BreastBigger.safetensors" "https://civitai.red/api/download/models/2567144?fileId=2455406&token=8dfbdadb6eb4a3336e4ffcb75697fd07"
 # Make your breasts bigger , Lora weight: 1.5-1.2
 
 # QW_Ahegao
-wget -O "/workspace/ComfyUI/models/loras/QW_Ahegao.safetensors" "https://civitai.red/api/download/models/2209972?fileId=2102957&token=your_key"
+wget -O "/workspace/ComfyUI/models/loras/QW_Ahegao.safetensors" "https://civitai.red/api/download/models/2209972?fileId=2102957&token=8dfbdadb6eb4a3336e4ffcb75697fd07"
 # making an ahegao face, making an ahegao face with tongue out, making an ahegao face with drool
 
 # Spit_on_Qwen
-wget -O "/workspace/ComfyUI/models/loras/Spit_on_Qwen.safetensors" "https://civitai.red/api/download/models/2205295?fileId=2098226&token=your_key"
+wget -O "/workspace/ComfyUI/models/loras/Spit_on_Qwen.safetensors" "https://civitai.red/api/download/models/2205295?fileId=2098226&token=8dfbdadb6eb4a3336e4ffcb75697fd07"
 # spitting
 
 # QW_Ani2Real 다운로드
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_Ani2Real.safetensors "https://civitai.red/api/download/models/2653480?fileId=2541320&token=your_key"
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_Ani2Real.safetensors "https://civitai.red/api/download/models/2653480?fileId=2541320&token=8dfbdadb6eb4a3336e4ffcb75697fd07"
 
 # QW_MCNL 다운로드
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_MCNL.safetensors "https://civitai.red/api/download/models/2105899?fileId=2000660&token=your_key"
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_MCNL.safetensors "https://civitai.red/api/download/models/2105899?fileId=2000660&token=8dfbdadb6eb4a3336e4ffcb75697fd07"
 Trigger words: nsfw, cum_on_face, blowjob, cowgirlout, creamp1e, penis, l1ck, missionary, nipples, reversecowgirlpov, vagina
 
 
