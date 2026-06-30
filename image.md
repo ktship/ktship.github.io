@@ -1,37 +1,43 @@
 # Qwen-2511 Edit 워크플로우 설정 가이드
 
+---
+
+## 0. 사전 준비
+
+```bash
+# ComfyUI 심볼릭 링크 생성 (RunPod 환경)
+ln -s /workspace/runpod-slim/ComfyUI/ /workspace/ComfyUI
+
+# huggingface_hub 설치 (hf 명령어가 없는 경우)
+# pip install -U huggingface_hub
+hf update
+```
+
+---
+
 ## 1. 체크포인트 모델
+
 # 메인 확산 모델 (FP8 Mixed)
 hf download Comfy-Org/Qwen-Image-Edit_ComfyUI \
   split_files/diffusion_models/qwen_image_edit_2511_fp8mixed.safetensors \
   --local-dir /workspace/ComfyUI/models/diffusion_models
 
 # 라이트닝 LoRA (4스텝 고속 생성)
-hf download lightx2v/Qwen-Image-Edit-2511-Lightning \
-  Qwen-Image-Edit-2511-Lightning-4steps-V1.0-fp32.safetensors \
-  --local-dir /workspace/ComfyUI/models/loras
+hf download lightx2v/Qwen-Image-Edit-2511-Lightning Qwen-Image-Edit-2511-Lightning-4steps-V1.0-fp32.safetensors --local-dir /workspace/ComfyUI/models/loras
 # 라이트닝 LoRA (8스텝)
-hf download lightx2v/Qwen-Image-Edit-2511-Lightning \
-  Qwen-Image-Edit-2511-Lightning-8steps-V1.0-fp32.safetensors \
-  --local-dir /workspace/ComfyUI/models/loras
+# hf download lightx2v/Qwen-Image-Edit-2511-Lightning Qwen-Image-Edit-2511-Lightning-8steps-V1.0-fp32.safetensors --local-dir /workspace/ComfyUI/models/loras
 
 # 텍스트 인코더 (Qwen 2.5 VL 7B FP8)
-hf download Comfy-Org/Qwen-Image_ComfyUI \
-  split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors \
-  --local-dir /workspace/ComfyUI/models/text_encoders
+# hf download Comfy-Org/Qwen-Image_ComfyUI split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors --local-dir /workspace/ComfyUI/models/text_encoders
 
 # 텍스트 인코더 (Abliterated)
 hf download ussoewwin/Qwen2.5-VL-7B-Instruct-abliterated --include "Qwen2.5-VL-7B-Instruct-abliterated_converted.safetensors" --local-dir /workspace/runpod-slim/ComfyUI/models/text_encoders
 
 # VAE
-hf download Comfy-Org/Qwen-Image_ComfyUI \
-  split_files/vae/qwen_image_vae.safetensors \
-  --local-dir /workspace/ComfyUI/models/vae
+hf download Comfy-Org/Qwen-Image_ComfyUI split_files/vae/qwen_image_vae.safetensors --local-dir /workspace/ComfyUI/models/vae
 
 # 다각도 뷰 
-hf download fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA \
-  qwen-image-edit-2511-multiple-angles-lora.safetensors \
-  --local-dir /workspace/ComfyUI/models/loras
+hf download fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA qwen-image-edit-2511-multiple-angles-lora.safetensors --local-dir /workspace/ComfyUI/models/loras
 
 ---
 
@@ -78,7 +84,18 @@ echo "=========================================="
 
 ---
 
-## 3. 커스텀 노드
+## 3. 커스텀 노드 (ktship_Qwen2511Multiple-Angles용)
+cd /workspace/runpod-slim/ComfyUI/custom_nodes
+
+# Git Clone
+git clone https://github.com/chflame163/ComfyUI_LayerStyle.git
+git clone https://github.com/yolain/ComfyUI-Easy-Use.git
+git clone https://github.com/jtydhr88/ComfyUI-qwenmultiangle.git
+
+# 파이썬 종속성 라이브러리 및 허깅페이스 CLI 설치
+pip install -r ComfyUI-Easy-Use/requirements.txt
+pip install -r ComfyUI_LayerStyle/requirements.txt
+
 ## 4. 워크플로우
 ktship_image_qwen_image_edit_2511.json
 ktship_Qwen2511Multiple-Angles.json
