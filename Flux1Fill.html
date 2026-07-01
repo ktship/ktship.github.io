@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flux.1 Fill Dev (Inpaint) 모델 & LoRA 다운로드 가이드</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --text-color: #334155;
+            --primary-color: #2563eb;
+            --primary-light: #eff6ff;
+            --border-color: #e2e8f0;
+            --code-bg: #1e293b;
+            --code-text: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            display: flex;
+        }
+
+        /* 내비게이션 사이드바 */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            padding: 30px 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.1rem;
+            color: #0f172a;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 12px;
+        }
+
+        .sidebar a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        /* 메인 콘텐츠 영역 */
+        .main-content {
+            margin-left: 280px;
+            padding: 50px 80px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .header-section {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            color: #0f172a;
+            margin-bottom: 15px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header-section p {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: #0f172a;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+        }
+
+        /* 코드 블록 스타일 */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: "Fira Code", Consolas, Monaco, monospace;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #334155;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* 인라인 코드 스타일 */
+        p code, li code {
+            background-color: #e2e8f0;
+            color: #0f172a;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* 로라 카드형 리스트 */
+        .lora-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .lora-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lora-meta {
+            font-size: 0.95rem;
+            color: #64748b;
+            background-color: #f1f5f9;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #94a3b8;
+        }
+
+        /* 팁/정보 박스 스타일 */
+        .info-box {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary-color);
+            padding: 25px;
+            border-radius: 0 12px 12px 0;
+            margin: 30px 0;
+        }
+
+        .info-box h3 {
+            color: #1e40af;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .info-box ul, .info-box ol {
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: var(--border-color);
+            margin: 40px 0;
+        }
+
+        /* 반응형 모바일 대응 */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 20px;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 사이드바 내비게이션 -->
+    <div class="sidebar">
+        <h2>목차 바로가기</h2>
+        <ul>
+            <li><a href="#diffusion">① Diffusion Model</a></li>
+            <li><a href="#text-encoders">② Text Encoders</a></li>
+            <li><a href="#vae">③ VAE</a></li>
+            <li><a href="#loras">④ 로라들 (LoRAs)</a></li>
+            <li><a href="#tips">💡 실행 & 마스크 설정 팁</a></li>
+        </ul>
+    </div>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <div class="main-content">
+        <div class="header-section">
+            <h1>Flux.1 Fill Dev (Inpaint) 모델 다운로드 가이드</h1>
+            <p>이 문서는 ComfyUI에서 <strong>Flux.1 Fill Dev</strong> 모델을 활용한 인페인팅(Inpainting) 및 이미지 채우기(Fill) 워크플로우를 구동하기 위해 필요한 필수 모델들의 다운로드 명령어를 정리한 가이드입니다.</p>
+        </div>
+
+        <hr>
+
+        <!-- 1. Diffusion Model -->
+        <div id="diffusion">
+            <h2>① Diffusion Model (인페인트 전용 메인 모델)</h2>
+            <p><code>Comfy-Org/flux1-dev</code> 저장소의 하위 경로에 있는 인페인트/필 특화 디퓨전 모델을 다운로드합니다.</p>
+            <pre><code>hf download Comfy-Org/flux1-dev --include "split_files/diffusion_models/flux1-fill-dev.safetensors" --local-dir /workspace/runpod-slim/ComfyUI/models/diffusion_models</code></pre>
+        </div>
+
+        <!-- 2. Text Encoders -->
+        <div id="text-encoders">
+            <h2>② Text Encoders (프롬프트 인식 엔진)</h2>
+            <p>긍정/부정 텍스트 프롬프트를 해석하는 데 필요한 두 가지 클립 모델입니다.</p>
+            <pre><code># CLIP-L 다운로드
+hf download comfyanonymous/flux_text_encoders --include "clip_l.safetensors" --local-dir /workspace/runpod-slim/ComfyUI/models/text_encoders
+
+# T5XXL 다운로드
+hf download comfyanonymous/flux_text_encoders --include "t5xxl_fp16.safetensors" --local-dir /workspace/runpod-slim/ComfyUI/models/text_encoders</code></pre>
+        </div>
+
+        <!-- 3. VAE -->
+        <div id="vae">
+            <h2>③ VAE (이미지 복원 오토인코더)</h2>
+            <p>잠재 공간(Latent) 데이터를 우리가 볼 수 있는 최종 이미지로 복원(VAEDecode)할 때 사용하는 Flux 호환 필수 오토인코더 모델입니다.</p>
+            <pre><code>hf download Comfy-Org/Lumina_Image_2.0_Repackaged --include "split_files/vae/ae.safetensors" --local-dir /workspace/runpod-slim/ComfyUI/models/vae</code></pre>
+        </div>
+
+        <hr>
+
+        <!-- 4. 로라들 -->
+        <div id="loras">
+            <h2>④ 로라들</h2>
+            <p>서버에서 내려주는 고유한 파일명 본래 상태 그대로 <code>-P</code> 옵션을 조합하여 지정된 다운로드 폴더에 안전하게 일괄 저장하는 규칙 기반의 스크립트 세트입니다.</p>
+
+            <!-- LoRA 1 -->
+            <div class="lora-section">
+                <div class="lora-title">📦 Big Butt FLUX</div>
+                <div class="lora-meta">
+                    <strong>원격 주소:</strong> <a href="https://civitai.com/api/download/models/727590?fileId=642137" target="_blank">https://civitai.com/api/download/models/727590?fileId=642137</a>
+                </div>
+                <pre><code>wget --content-disposition "https://civitai.com/api/download/models/727590?fileId=642137&token=${CIVITAI_TOKEN}" -P /workspace/runpod-slim/ComfyUI/models/loras/</code></pre>
+            </div>
+
+            <!-- LoRA 2 -->
+            <div class="lora-section">
+                <div class="lora-title">📦 Ahegao FLUX</div>
+                <div class="lora-meta">
+                    <strong>원격 주소:</strong> <a href="https://civitai.com/api/download/models/1477302?fileId=1378682" target="_blank">https://civitai.com/api/download/models/1477302?fileId=1378682</a><br>
+                    <strong>트리거 워드:</strong> Ahegao, Ahegao face, Tongue out, Cross eyed, 4h3g40
+                </div>
+                <pre><code># trigger words : Ahegao, Ahegao face, Tongue out, Cross eyed, 4h3g40
+wget --content-disposition "https://civitai.com/api/download/models/1477302?fileId=1378682&token=${CIVITAI_TOKEN}" -P /workspace/runpod-slim/ComfyUI/models/loras/</code></pre>
+            </div>
+
+            <!-- LoRA 3 -->
+            <div class="lora-section">
+                <div class="lora-title">📦 Better Butt</div>
+                <div class="lora-meta">
+                    <strong>원격 주소:</strong> <a href="https://civitai.com/api/download/models/2408383?fileId=2299166" target="_blank">https://civitai.com/api/download/models/2408383?fileId=2299166</a><br>
+                    <strong>추천 가중치:</strong> 0.4 - 0.6 (start with 0.45)<br>
+                    <strong>트리거 워드:</strong> butt<br>
+                    <strong>사용 팁:</strong> lora:butt:0.45 nice butt, wider hips, round butt, curvy lower body
+                </div>
+                <pre><code># Weight: 0.4 - 0.6 (start with 0.45)
+# Trigger words: butt
+# Tips : lora:butt:0.45 nice butt, wider hips, round butt, curvy lower body
+wget --content-disposition "https://civitai.com/api/download/models/2408383?fileId=2299166&token=${CIVITAI_TOKEN}" -P /workspace/runpod-slim/ComfyUI/models/loras/</code></pre>
+            </div>
+
+            <!-- LoRA 4 -->
+            <div class="lora-section">
+                <div class="lora-title">📦 Skinny Waist Huge Butt</div>
+                <div class="lora-meta">
+                    <strong>원격 주소:</strong> <a href="https://civitai.com/api/download/models/981486?fileId=887567" target="_blank">https://civitai.com/api/download/models/981486?fileId=887567</a><br>
+                    <strong>태그 팁:</strong> skinny, skinny waist, very skinny waist, large butt, bubble butt, huge butt, very large butt, The image is a high-resolution photograph, This image is a highly realistic, computer-generated CGI rendering
+                </div>
+                <pre><code># skinny, skinny waist, very skinny waist, large butt, bubble butt, huge butt, very large butt, The image is a high-resolution photograph, This image is a highly realistic, computer-generated CGI rendering
+wget --content-disposition "https://civitai.com/api/download/models/981486?fileId=887567&token=${CIVITAI_TOKEN}" -P /workspace/runpod-slim/ComfyUI/models/loras/</code></pre>
+            </div>
+
+            <!-- LoRA 5 -->
+            <div class="lora-section">
+                <div class="lora-title">📦 large nipples for FLUX</div>
+                <div class="lora-meta">
+                    <strong>원격 주소:</strong> <a href="https://civitai.com/api/download/models/957540?fileId=866293" target="_blank">https://civitai.com/api/download/models/957540?fileId=866293</a><br>
+                    <strong>트리거 워드:</strong> long nipples, large nipples
+                </div>
+                <pre><code># Trigger : long nipples, large nipples
+wget --content-disposition "https://civitai.com/api/download/models/957540?fileId=866293&token=${CIVITAI_TOKEN}" -P /workspace/runpod-slim/ComfyUI/models/loras/</code></pre>
+            </div>
+
+            <!-- LoRA 6 -->
+            <div class="lora-section">
+                <div class="lora-title">📦 FLUX Nipples fix and Different breast size</div>
+                <div class="lora-meta">
+                    <strong>원격 주소:</strong> <a href="https://civitai.com/api/download/models/1095735?fileId=1001391" target="_blank">https://civitai.com/api/download/models/1095735?fileId=1001391</a><br>
+                    <strong>추천 세팅값:</strong> 0.6 ~ 0.9<br>
+                    <strong>트리거 워드:</strong> Small breasts, Medium breasts, Big breasts
+                </div>
+                <pre><code># Setting : 0.6 ~ 0.9
+# Trigger : Small breasts, Medium breasts, Big breasts
+wget --content-disposition "https://civitai.com/api/download/models/1095735?fileId=1001391&token=${CIVITAI_TOKEN}" -P /workspace/runpod-slim/ComfyUI/models/loras/</code></pre>
+            </div>
+
+            <!-- LoRA 7 -->
+            <div class="lora-section">
+                <div class="lora-title">📦 Flux - Ultra-Realistic Nipple Generator</div>
+                <div class="lora-meta">
+                    <strong>원격 주소:</strong> <a href="https://civitai.com/api/download/models/1112151?fileId=1016973" target="_blank">https://civitai.com/api/download/models/1112151?fileId=1016973</a>
+                </div>
+                <pre><code>wget --content-disposition "https://civitai.com/api/download/models/1112151?fileId=1016973&token=${CIVITAI_TOKEN}" -P /workspace/runpod-slim/ComfyUI/models/loras/</code></pre>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- 💡 실행 및 마스크 설정 팁 -->
+        <div id="tips" class="info-box">
+            <h3>💡 실행 및 마스크(Mask) 설정 팁</h3>
+            
+            <h4 style="margin-top:15px; margin-bottom:5px; color:#0f172a;">ComfyUI 최신 버전 유지</h4>
+            <p>본 워크플로우는 내부 노드들을 하나로 묶어 정리한 서브그래프(Subgraph) 형태(<code>Flux.1 Fill Dev Image Inpainting</code>)를 사용하므로, 에러 방지를 위해 실행 전 ComfyUI Manager를 통해 전체 패키지를 최신 버전으로 업데이트하는 것을 권장합니다.</p>
+
+            <h4 style="margin-top:15px; margin-bottom:5px; color:#0f172a;">인페인트 마스크 칠하는 방법</h4>
+            <ol>
+                <li><code>LoadImage</code> 노드에 원본 이미지를 업로드한 후, 이미지 위에서 마우스 우클릭 → <code>Open in MaskEditor</code>를 실행합니다.</li>
+                <li>팝업 창이 뜨면 수정하고 싶은 영역(옷, 배경, 오브젝트 등)을 마우스로 슥슥 색칠한 뒤 우측 하단 <code>Save to node</code>를 누르면 마스크 설정이 완료됩니다. (마우스 휠로 브러시 크기 조절 가능)</li>
+            </ol>
+
+            <h4 style="margin-top:15px; margin-bottom:5px; color:#0f172a;">프롬프트 입력</h4>
+            <p>마스크를 칠한 뒤 <code>CLIPTextEncode</code> (Positive Prompt) 노드 창에 새로 채워 넣고 싶은 내용을 영문으로 입력하고 <code>Queue Prompt</code>를 실행하면 주변 맥락과 어우러지는 완벽한 인페인팅 결과물이 생성됩니다.</p>
+        </div>
+    </div>
+
+</body>
+</html>

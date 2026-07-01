@@ -16,6 +16,7 @@
       --border:   #1e2733;
       --accent:   #00e5ff;
       --accent2:  #7c4dff;
+      --accent3:  #4ade80;
       --warn:     #ff9800;
       --text:     #e2e8f0;
       --muted:    #64748b;
@@ -106,6 +107,7 @@
       flex-shrink: 0;
       letter-spacing: .04em;
     }
+    .section-num.green { background: var(--accent3); }
     .section-num.purple { background: var(--accent2); }
     .section-num.orange { background: var(--warn); }
     .section-title {
@@ -130,7 +132,7 @@
       margin-bottom: 12px;
     }
     .card p { font-size: 14px; color: var(--text); margin-bottom: 10px; }
-    
+
     /* ── BULLET LIST ── */
     .bullet-list { margin-left: 20px; margin-bottom: 16px; font-size: 14px; color: #cbd5e1; }
     .bullet-list li { margin-bottom: 6px; }
@@ -170,6 +172,7 @@
       transition: color .15s, border-color .15s;
     }
     .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .copy-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     pre {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
@@ -203,17 +206,20 @@
       gap: 7px;
       font-size: 13px;
       font-weight: 500;
+      font-family: inherit;
       color: var(--accent);
       background: rgba(0,229,255,.07);
       border: 1px solid rgba(0,229,255,.2);
       border-radius: 8px;
       padding: 7px 14px;
       text-decoration: none;
+      cursor: pointer;
       transition: background .15s, border-color .15s;
       margin-top: 8px;
       margin-right: 8px;
     }
     .link-btn:hover { background: rgba(0,229,255,.14); border-color: rgba(0,229,255,.4); }
+    .link-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
     /* ── DIVIDER ── */
     .divider {
@@ -254,19 +260,21 @@
         <button class="copy-btn" onclick="copyCode(this)">copy</button>
       </div>
       <pre><span class="comment"># ── 1. 메인 확산 모델 (FP8 Mixed)</span>
-hf download Comfy-Org/Qwen-Image-Edit_ComfyUI split_files/diffusion_models/qwen_image_edit_2511_fp8mixed.safetensors --local-dir /workspace/runpod-slim/ComfyUI/models/diffusion_models && \
-mv /workspace/runpod-slim/ComfyUI/models/diffusion_models/split_files/diffusion_models/* /workspace/runpod-slim/ComfyUI/models/diffusion_models/ 2>/dev/null; rm -rf /workspace/runpod-slim/ComfyUI/models/diffusion_models/split_files && \
+hf download Comfy-Org/Qwen-Image-Edit_ComfyUI split_files/diffusion_models/qwen_image_edit_2511_fp8mixed.safetensors --local-dir /workspace/runpod-slim/ComfyUI/models/diffusion_models
+mv /workspace/runpod-slim/ComfyUI/models/diffusion_models/split_files/diffusion_models/* /workspace/runpod-slim/ComfyUI/models/diffusion_models/ 2>/dev/null
+rm -rf /workspace/runpod-slim/ComfyUI/models/diffusion_models/split_files
 
 <span class="comment"># ── 2. 라이트닝 가속 LoRA (4스텝 & 8스텝)</span>
-hf download lightx2v/Qwen-Image-Edit-2511-Lightning Qwen-Image-Edit-2511-Lightning-4steps-V1.0-fp32.safetensors --local-dir /workspace/runpod-slim/ComfyUI/models/loras && \
-hf download lightx2v/Qwen-Image-Edit-2511-Lightning Qwen-Image-Edit-2511-Lightning-8steps-V1.0-fp32.safetensors --local-dir /workspace/runpod-slim/ComfyUI/models/loras && \
+hf download lightx2v/Qwen-Image-Edit-2511-Lightning Qwen-Image-Edit-2511-Lightning-4steps-V1.0-fp32.safetensors --local-dir /workspace/runpod-slim/ComfyUI/models/loras
+hf download lightx2v/Qwen-Image-Edit-2511-Lightning Qwen-Image-Edit-2511-Lightning-8steps-V1.0-fp32.safetensors --local-dir /workspace/runpod-slim/ComfyUI/models/loras
 
 <span class="comment"># ── 3. 텍스트 인코더 (오피셜 버전을 대체하는 가공 완료형 Abliterated 모델)</span>
-hf download ussoewwin/Qwen2.5-VL-7B-Instruct-abliterated --include "Qwen2.5-VL-7B-Instruct-abliterated_converted.safetensors" --local-dir /workspace/runpod-slim/ComfyUI/models/text_encoders && \
+hf download ussoewwin/Qwen2.5-VL-7B-Instruct-abliterated --include "Qwen2.5-VL-7B-Instruct-abliterated_converted.safetensors" --local-dir /workspace/runpod-slim/ComfyUI/models/text_encoders
 
 <span class="comment"># ── 4. 기본 VAE 및 다각도 생성용 보조 LoRA</span>
-hf download Comfy-Org/Qwen-Image_ComfyUI split_files/vae/qwen_image_vae.safetensors --local-dir /workspace/runpod-slim/ComfyUI/models/vae && \
-mv /workspace/runpod-slim/ComfyUI/models/vae/split_files/vae/* /workspace/runpod-slim/ComfyUI/models/vae/ 2>/dev/null; rm -rf /workspace/runpod-slim/ComfyUI/models/vae/split_files && \
+hf download Comfy-Org/Qwen-Image_ComfyUI split_files/vae/qwen_image_vae.safetensors --local-dir /workspace/runpod-slim/ComfyUI/models/vae
+mv /workspace/runpod-slim/ComfyUI/models/vae/split_files/vae/* /workspace/runpod-slim/ComfyUI/models/vae/ 2>/dev/null
+rm -rf /workspace/runpod-slim/ComfyUI/models/vae/split_files
 hf download fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA qwen-image-edit-2511-multiple-angles-lora.safetensors --local-dir /workspace/runpod-slim/ComfyUI/models/loras
 
 echo "=== 핵심 컴포넌트 모델 설치 완료! ==="</pre>
@@ -275,10 +283,18 @@ echo "=== 핵심 컴포넌트 모델 설치 완료! ==="</pre>
 
   <hr class="divider" />
 
+<!-- ══════════════════════════════════════
+       2. 기능성 LoRA 컬렉션
+  ══════════════════════════════════════ -->
   <div class="section">
     <div class="section-header">
       <span class="section-num orange">02</span>
       <span class="section-title">기능성 및 특화형 LoRA 다운로드 스크립트</span>
+    </div>
+
+    <div class="notice">
+      <span class="notice-icon">⚠️</span>
+      <span>실행 전, 터미널에서 본인의 Civitai API 토큰을 환경변수로 먼저 설정하세요: <code style="color:var(--warn);">export CIVITAI_TOKEN="본인_토큰"</code></span>
     </div>
 
     <div class="code-block">
@@ -286,74 +302,68 @@ echo "=== 핵심 컴포넌트 모델 설치 완료! ==="</pre>
         <span class="code-lang">bash</span>
         <button class="copy-btn" onclick="copyCode(this)">copy</button>
       </div>
-      <pre><span class="comment"># ── 1. Qwen-image_NSFW_Adv1</span>
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/Qwen-image_NSFW_Adv1.safetensors "https://civitai.red/api/download/models/2328988?fileId=2219270&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
+      <pre><span class="comment"># Qwen-image_NSFW_Adv1 — Sampler: res_2s, Scheduler: bong_tangent</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/Qwen-image_NSFW_Adv1.safetensors "https://civitai.red/api/download/models/2328988?fileId=2219270&token=${CIVITAI_TOKEN}"
 
-<span class="comment"># ── 2. QW_BreastEnhancer 시리즈 관련 세트</span>
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_BreastEnhancer.safetensors "https://civitai.red/api/download/models/2305397?fileId=2196123&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_ButtSlider.safetensors "https://civitai.red/api/download/models/2260485?fileId=2152693&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_BreastBigger.safetensors "https://civitai.red/api/download/models/2567144?fileId=2455406&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_Ahegao.safetensors "https://civitai.red/api/download/models/2209972?fileId=2102957&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
+<span class="comment"># QW_BreastEnhancer — tiny/small/medium/large areoles & breasts, pale/brown/dark/ghost areoles, hard/erect nipples</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_BreastEnhancer.safetensors "https://civitai.red/api/download/models/2305397?fileId=2196123&token=${CIVITAI_TOKEN}"
 
-<span class="comment"># ── 3. 연출 및 실사화 특화 모델 세트</span>
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/Spit_on_Qwen.safetensors "https://civitai.red/api/download/models/2205295?fileId=2098226&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_Ani2Real.safetensors "https://civitai.red/api/download/models/2653480?fileId=2541320&token=8dfbdadb6eb4a3336e4ffcb75697fd07" && \
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_MCNL.safetensors "https://civitai.red/api/download/models/2105899?fileId=2000660&token=8dfbdadb6eb4a3336e4ffcb75697fd07"
+<span class="comment"># QW_ButtSlider — -2.0(Flat) ~ 2.0(Large)</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_ButtSlider.safetensors "https://civitai.red/api/download/models/2260485?fileId=2152693&token=${CIVITAI_TOKEN}"
+
+<span class="comment"># QW_BreastBigger — Lora weight: 1.5-1.2</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_BreastBigger.safetensors "https://civitai.red/api/download/models/2567144?fileId=2455406&token=${CIVITAI_TOKEN}"
+
+<span class="comment"># QW_Ahegao</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_Ahegao.safetensors "https://civitai.red/api/download/models/2209972?fileId=2102957&token=${CIVITAI_TOKEN}"
+
+<span class="comment"># Spit_on_Qwen</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/Spit_on_Qwen.safetensors "https://civitai.red/api/download/models/2205295?fileId=2098226&token=${CIVITAI_TOKEN}"
+
+<span class="comment"># QW_Ani2Real</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_Ani2Real.safetensors "https://civitai.red/api/download/models/2653480?fileId=2541320&token=${CIVITAI_TOKEN}"
+
+<span class="comment"># QW_MCNL</span>
+wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_MCNL.safetensors "https://civitai.red/api/download/models/2105899?fileId=2000660&token=${CIVITAI_TOKEN}"
 
 echo "=========================================="
 echo " 모든 Civitai 특화 LoRA 다운로드 완료! "
 echo "=========================================="</pre>
     </div>
-
-    <div class="card">
-      <div class="card-body">
-        <div class="card-subtitle">🎯 모델별 노브 조절 및 세부 작동 정보</div>
-        
-        <p><strong>• Qwen-image_NSFW_Adv1:</strong></p>
-        <ul class="bullet-list">
-          <li>권장 노드 매핑 샘플러 : <code style="color:var(--warn)">res_2s</code></li>
-          <li>권장 스케줄러 구조 : <code style="color:var(--warn)">bong_tangent</code></li>
-        </ul>
-
-        <p><strong>• QW_BreastEnhancer &amp; Bigger:</strong></p>
-        <ul class="bullet-list">
-          <li>지원 가중치 키워드: tiny / small / medium / large sized breasts &amp; areoles</li>
-          <li>톤 및 형상 제어 태그: pale / brown / dark / ghost areoles, hard / erect nipples</li>
-          <li>Bigger 가중치 한계 스케일 가이드: <code style="color:var(--accent)">1.2 ~ 1.5</code> 스케일 값 권장</li>
-        </ul>
-
-        <p><strong>• QW_ButtSlider:</strong></p>
-        <ul class="bullet-list">
-          <li>조절 수치 바운더리 매핑: 최소 <code style="color:var(--warn)">-2.0 (Flat)</code> 부터 최대 <code style="color:var(--accent)">2.0 (Large)</code> 까지 작동 레이어 분할</li>
-        </ul>
-
-        <p><strong>• 액션 및 표정 특화 태그 모음 (Ahegao / Spit / MCNL):</strong></p>
-        <ul class="bullet-list">
-          <li>Ahegao: making an ahegao face, making an ahegao face with tongue out, making an ahegao face with drool</li>
-          <li>Spitting 연출: spitting 단일 프롬프트 매핑</li>
-          <li>QW_MCNL 핵심 가중 트리거 워드 세트: <code style="color:var(--accent)">nsfw, cum_on_face, blowjob, cowgirlout, creamp1e, penis, l1ck, missionary, nipples, reversecowgirlpov, vagina</code></li>
-        </ul>
-      </div>
-    </div>
   </div>
 
   <hr class="divider" />
 
-<div class="section">
+  <div class="section">
     <div class="section-header">
       <span class="section-num purple">03</span>
-      <span class="section-title">커스텀 노드 및 워크플로우 파일</span>
+      <span class="section-title">워크플로우 파일</span>
     </div>
 
-    <div style="margin-bottom: 24px;"></div>
-
-    <p style="font-size:14px; margin-bottom:12px;">클릭 시 해당 워크플로우(.json) 파일을 다운로드할 수 있습니다:</p>
-    <a class="link-btn" href="https://ktship.github.io/ktship_image_qwen_image_edit_2511.json" target="_blank">📄 ktship_image_qwen_image_edit_2511.json</a>
-    <a class="link-btn" href="https://ktship.github.io/ktship_Qwen2511Multiple-Angles.json" target="_blank">📄 ktship_Qwen2511Multiple-Angles.json</a>
+    <p style="font-size:14px; margin-bottom:12px;">클릭 시 해당 워크플로우(.json) 파일을 즉시 다운로드(저장)합니다:</p>
+    <button class="link-btn" onclick="forceDownload('https://ktship.github.io/ktship_image_qwen_image_edit_2511.json', 'ktship_image_qwen_image_edit_2511.json')">📄 ktship_image_qwen_image_edit_2511.json</button>
+    <button class="link-btn" onclick="forceDownload('https://ktship.github.io/ktship_Qwen2511Multiple-Angles.json', 'ktship_Qwen2511Multiple-Angles.json')">📄 ktship_Qwen2511Multiple-Angles.json</button>
   </div>
+</div>
 
-  </div><script>
-
+<script>
+  function forceDownload(url, filename) {
+    fetch(url)
+      .then(response => response.blob())
+      .then(blob => {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      })
+      .catch(error => {
+        // 도메인 CORS 에러가 날 경우를 대비한 백업 (새 탭 열기)
+        window.open(url, '_blank');
+      });
+  }
   function copyCode(btn) {
     const pre = btn.closest('.code-block').querySelector('pre');
     const text = pre.innerText;
