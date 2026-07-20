@@ -4,9 +4,6 @@
 
 ## 0. Pre
 
-export HF_TOKEN="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"
-export CIVITAI_TOKEN="8dfbdadb6eb4a3336e4ffcb75697fd07"
-
 # ComfyUI 심볼릭 링크 생성 (RunPod 환경)
 ln -s /workspace/runpod-slim/ComfyUI/ /workspace/ComfyUI
 
