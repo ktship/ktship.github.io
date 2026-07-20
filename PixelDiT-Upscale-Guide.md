@@ -17,7 +17,7 @@ hf download Comfy-Org/PixelDiT --include "diffusion_models/pid_flux1_512_to_2048
 hf download Comfy-Org/PixelDiT --include "text_encoders/gemma_2_2b_it_elm_bf16.safetensors" --local-dir /workspace/runpod-slim/ComfyUI/models/text_encoders
 
 # 3. FLUX.1-dev VAE (ae.safetensors)
-HF_TOKEN="${HF_TOKEN}" hf download black-forest-labs/FLUX.1-dev --include "ae.safetensors" --local-dir /workspace/runpod-slim/ComfyUI/models/vae
+hf download Comfy-Org/Lumina_Image_2.0_Repackaged --include "split_files/vae/ae.safetensors" --local-dir /workspace/runpod-slim/ComfyUI/models/vae
 
 echo "=========================================="
 echo " PiD Upscale 관련 모델 다운로드 완료! "
