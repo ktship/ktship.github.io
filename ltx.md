@@ -29,6 +29,10 @@ ln -s /workspace/runpod-slim/ComfyUI/ /workspace/ComfyUI
 pip install -U huggingface_hub
 hf update
 pip install sageattention
+pip uninstall -y kornia
+# 안되면 6.12
+pip install kornia==0.7.3
+
 
 ---
 
@@ -191,13 +195,10 @@ hf download Kijai/LTX2.3_comfy vae/LTX23_video_vae_bf16.safetensors --local-dir 
 hf download Kijai/LTX2.3_comfy vae/LTX23_audio_vae_bf16.safetensors --local-dir /workspace/ComfyUI/models/vae/
 
 # gemma_3_12B_it_fp4_mixed.safetensors
-
 # hf download Comfy-Org/ltx-2 split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors --local-dir /workspace/ComfyUI/models/text_encoders/
-
 hf download Sikaworld1990/gemma-3-12b-it-abliterated-sikaworld-high-fidelity-edition-Ltx-2 gemma-3-12b-it-abliterated-sikaworld-high-fidelity-edition.safetensors --local-dir /workspace/ComfyUI/models/text_encoders
 
 # ltx-2.3_text_projection_bf16.safetensors
-
 hf download Kijai/LTX2.3_comfy text_encoders/ltx-2.3_text_projection_bf16.safetensors --local-dir /workspace/ComfyUI/models/text_encoders/
 
 # video_depth_anything_vits.pth
