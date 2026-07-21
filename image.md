@@ -16,6 +16,8 @@ pip uninstall -y kornia
 pip install kornia==0.7.3
 
 
+cd /workspace
+
 # AIO임. 이거 하나면 일단 Qwen Image Edit 됨. 아래는 lora를 써야할때
 hf download Phr00t/Qwen-Image-Edit-Rapid-AIO v23/Qwen-Rapid-AIO-NSFW-v23.safetensors --local-dir /workspace/ComfyUI/models/checkpoints/Qwen
 ---
@@ -42,6 +44,8 @@ hf download Comfy-Org/Qwen-Image_ComfyUI split_files/vae/qwen_image_vae.safetens
 # 다각도 뷰 
 hf download fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA qwen-image-edit-2511-multiple-angles-lora.safetensors --local-dir /workspace/ComfyUI/models/loras
 
+# Qwen-consistence_edit_v2
+hf download JackieZaaa/Qwen-consistence_edit_v2.safetensors Qwen-consistence_edit_v2.safetensors --local-dir /workspace/runpod-slim/ComfyUI/models/loras
 ---
 
 ## 2. LoRA
@@ -52,6 +56,9 @@ wget -O /workspace/runpod-slim/ComfyUI/models/loras/Qwen-image_NSFW_Adv1.safeten
 # ALN, realistic_nipples
 wget -O "/workspace/ComfyUI/models/loras/realistic_nipples.safetensors" "https://civitai.red/api/download/models/2392385?fileId=2282541&token=${CIVITAI_TOKEN}"
 # Trigger : ALN
+
+# nipple ring, Nipple_Ring_Piercing_1.0
+wget -O "/workspace/ComfyUI/models/loras/Nipple_Ring_Piercing_1.0.safetensors" "https://civitai.red/api/download/models/2297084?fileId=2188030&token=${CIVITAI_TOKEN}"
 
 # QW_BreastEnhancer
 wget -O "/workspace/ComfyUI/models/loras/QW_BreastEnhancer.safetensors" "https://civitai.red/api/download/models/2305397?fileId=2196123&token=${CIVITAI_TOKEN}"
@@ -84,7 +91,7 @@ wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_Ani2Real.safetensors "htt
 
 # QW_MCNL 다운로드
 wget -O /workspace/runpod-slim/ComfyUI/models/loras/QW_MCNL.safetensors "https://civitai.red/api/download/models/2105899?fileId=2000660&token=${CIVITAI_TOKEN}"
-Trigger words: nsfw, cum_on_face, blowjob, cowgirlout, creamp1e, penis, l1ck, missionary, nipples, reversecowgirlpov, vagina
+# Trigger words: nsfw, cum_on_face, blowjob, cowgirlout, creamp1e, penis, l1ck, missionary, nipples, reversecowgirlpov, vagina
 
 
 echo "=========================================="
