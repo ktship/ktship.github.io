@@ -157,6 +157,14 @@ tar -czvf output_all.tar.gz /workspace/ComfyUI/output
 
 ---
 
+
+
+
+
+
+
+
+
 ## 새로운 버젼
 
 # 0. 사전 준비
@@ -215,3 +223,57 @@ hf download Lightricks/LTX-2.3 ltx-2.3-spatial-upscaler-x2-1.1.safetensors --loc
 ## hf download Kijai/LTX2.3_comfy loras/ltx-2.3-22b-distilled-1.1_lora-dynamic_fro09_avg_rank_111_bf16.safetensors   
 --local-dir /workspace/ComfyUI/models/loras/
 
+---
+
+# ---------------------------------------------------------
+# 2. 메인 체크포인트 & UNET & Latent Upscaler
+# ---------------------------------------------------------
+# 10Eros 메인 체크포인트
+hf download Cyberneko/10Eros 10Eros_v1.4_fp8mixed_learned.safetensors --local-dir /workspace/ComfyUI/models/checkpoints
+
+# DaSiWa ltx2.3
+# wget -O "/workspace/ComfyUI/models/unet/DaSiWa-LTX23-DragonLeap-v4_fp8_mixed.safetensors" "https://civitai.red/api/download/models/3092188?fileId=2972051&token=${CIVITAI_TOKEN}"
+
+# LTX-Video 베이스 UNET
+# hf download Lightricks/LTX-Video ltx-video-2b-v0.9.1.safetensors --local-dir /workspace/ComfyUI/models/unet
+
+# Latent Spatial Upscaler (2x)
+hf download Lightricks/LTX-Video ltx-2.3-spatial-upscaler-x2-1.1.safetensors --local-dir /workspace/ComfyUI/models/latent_upscale_models
+
+# ---------------------------------------------------------
+# 3. 텍스트 인코더 (CLIP) & VAE
+# ---------------------------------------------------------
+# Gemma 3 텍스트 인코더
+hf download google/gemma-3-12b-it gemma-3-12b-it-heretic-v2_fp8_e4m3fn.safetensors --local-dir /workspace/ComfyUI/models/clip
+
+# 비디오 & 오디오 VAE
+hf download Lightricks/LTX-Video LTX23_video_vae_bf16.safetensors --local-dir /workspace/ComfyUI/models/vae
+hf download Lightricks/LTX-Video LTX23_audio_vae_bf16.safetensors --local-dir /workspace/ComfyUI/models/vae
+
+# ---------------------------------------------------------
+# 4. LoRA 다운로드 (Hugging Face)
+# ---------------------------------------------------------
+# Distilled LoRA (요청하신 TenStrip 저장소 적용)
+hf download TenStrip/LTX2.3_Distilled_Lora_1.1_Experiments ltx-2.3-22b-distilled-lora-1.1_fro90_ceil72_condsafe.safetensors --local-dir /workspace/ComfyUI/models/loras/Ltx2.3
+
+# OmniNFT RL LoRA
+hf download Kijai/LTX2.3_comfy loras/LTX-2.3-OmniNFT-RL-Lora_bf16.safetensors --local-dir /workspace/ComfyUI/models/loras/Ltx2.3
+
+# ---------------------------------------------------------
+# 5. LoRA 다운로드 (wget 직접 다운로드)
+# ---------------------------------------------------------
+# LTX23_DMD_reshaped_r256 (요청하신 HF URL 적용)
+wget -O "/workspace/ComfyUI/models/loras/Ltx2.3/LTX23_DMD_reshaped_r256.safetensors" \
+     "https://huggingface.co/Alissonerdx/LTX-LoRAs/resolve/main/ltx23_edit_anything_global_rank128_v1_9000steps_adamw.safetensors?download=true"
+
+# DR34ML4Y_LT3X_V3
+wget -O "/workspace/ComfyUI/models/loras/Ltx2.3/DR34ML4Y_LT3X_V3.safetensors" \
+     "https://civitai.red/api/download/models/3082662?fileId=2961952&token=${CIVITAI_TOKEN}"
+
+# DaSiWa_LTX23_NSFW_Bodyphysics_Fluid_Motion_Enhancer_v01
+wget -O "/workspace/ComfyUI/models/loras/Ltx2.3/DaSiWa_LTX23_NSFW_Bodyphysics_Fluid_Motion_Enhancer_v01.safetensors" \
+     "https://civitai.red/api/download/models/2996907?fileId=2878614&token=${CIVITAI_TOKEN}"
+
+# 추가 요청 LoRA ((ltx)cum_13_000002500)
+wget -O "/workspace/ComfyUI/models/loras/Ltx2.3/(ltx)cum_13_000002500.safetensors" \
+     "https://civitai.red/api/download/models/3092188?fileId=2972051&token=${CIVITAI_TOKEN}"
