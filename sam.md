@@ -15,9 +15,6 @@ pip uninstall -y kornia
 # 안되면 6.12
 pip install kornia==0.7.3
 
-
-cd /workspace
-
 # 2. Qwen 모델 다운로드
 hf download Comfy-Org/Qwen-Image-Edit_ComfyUI split_files/diffusion_models/qwen_image_edit_2511_fp8mixed.safetensors --local-dir /workspace/ComfyUI/models/diffusion_models
 hf download Comfy-Org/Qwen-Image_ComfyUI split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors --local-dir /workspace/ComfyUI/models/text_encoders
@@ -39,15 +36,29 @@ hf download JackieZaaa/Qwen-consistence_edit_v2.safetensors Qwen-consistence_edi
 
 ## 2. LoRA
 # Qwen-image_NSFW_Adv1
-wget -O /workspace/runpod-slim/ComfyUI/models/loras/Qwen-image_NSFW_Adv1.safetensors "https://civitai.red/api/download/models/2328988?fileId=2219270&token=${CIVITAI_TOKEN}"
+if [ -z "$CIVITAI_TOKEN" ]; then echo '🚨 에러: CIVITAI_TOKEN이 설정되지 않아 다운로드를 중지합니다'; else wget -O "/workspace/runpod-slim/ComfyUI/models/loras/nose_mouse_hook.safetensors" "https://civitai.red/api/download/models/2328988?fileId=2219270&token=${CIVITAI_TOKEN}"; fi
 # Sampler: res_2s and Scheduler: bong_tangent
 
 # ALN, realistic_nipples
 wget -O "/workspace/ComfyUI/models/loras/realistic_nipples.safetensors" "https://civitai.red/api/download/models/2392385?fileId=2282541&token=${CIVITAI_TOKEN}"
 # Trigger : ALN
 
+wget -O "/workspace/runpod-slim/ComfyUI/models/loras/ring.safetensors" "https://civitai.red/api/download/models/2511037?fileId=2398969&token=${CIVITAI_TOKEN}"
+wget -O "/workspace/runpod-slim/ComfyUI/models/loras/ring.safetensors" "https://civitai.red/api/download/models/2511037?fileId=2398969&token=${CIVITAI_TOKEN}"
+
+# fish-hook gag in mouth fastened with straps
+# nostrils pulled upwards by gold nose hook attached to vertical strap over her head
+wget -O "/workspace/runpod-slim/ComfyUI/models/loras/nose_mouse_hook.safetensors" "https://civitai.red/api/download/models/2747936?fileId=2634435&token=${CIVITAI_TOKEN}"
+
+# woman with big ass and narrow waist
+wget -O "/workspace/runpod-slim/ComfyUI/models/loras/nose_mouse_hook.safetensors" "https://civitai.red/api/download/models/2747936?fileId=2634435&token=${CIVITAI_TOKEN}"
+
 # nipple ring, Nipple_Ring_Piercing_1.0
 wget -O "/workspace/ComfyUI/models/loras/Nipple_Ring_Piercing_1.0.safetensors" "https://civitai.red/api/download/models/2297084?fileId=2188030&token=${CIVITAI_TOKEN}"
+
+
+# asslick
+
 
 # QW_BreastEnhancer
 wget -O "/workspace/ComfyUI/models/loras/QW_BreastEnhancer.safetensors" "https://civitai.red/api/download/models/2305397?fileId=2196123&token=${CIVITAI_TOKEN}"
@@ -87,6 +98,11 @@ echo "=========================================="
 echo " 런포드 환경에 추가 LoRA 다운로드 완료! "
 echo "=========================================="
 
+# SAM3 관련.
+/workspace/runpod-slim/ComfyUI/.venv-cu128/bin/python -m pip install --no-build-isolation git+https://github.com/facebookresearch/sam3.git
+/workspace/runpod-slim/ComfyUI/.venv-cu128/bin/python -m pip install -r /workspace/runpod-slim/ComfyUI/custom_nodes/ComfyUI-SAM3/requirements.txt
+/workspace/runpod-slim/ComfyUI/.venv-cu128/bin/python -m pip install --no-build-isolation git+https://github.com/facebookresearch/sam2.git
+
 ## 3. 커스텀 노드 (ktship_Qwen2511Multiple-Angles용)
 cd /workspace/ComfyUI/custom_nodes
 
@@ -108,6 +124,8 @@ git clone https://github.com/BigStationW/ComfyUi-TextEncodeEditAdvanced.git
 # 대형 필수 노드 팩
 git clone https://github.com/rgthree/rgthree-comfy.git
 git clone https://github.com/yolain/ComfyUI-Easy-Use.git
+
+/workspace/runpod-slim/ComfyUI/.venv-cu128/bin/python -m pip install --no-build-isolation git+https://github.com/facebookresearch/sam2
 git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
 git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git
 git clone https://github.com/jags111/efficiency-nodes-comfyui.git
@@ -122,7 +140,9 @@ for d in */; do [ -f "${d}requirements.txt" ] && echo "Installing in $d" && pip 
 ## Output 내용 다운로드
 tar -czvf output_all.tar.gz /workspace/ComfyUI/output
 
-
+Remove the blue patch. The man from image 2 is sitting on the bench in image 1, holding a cup with his right hand.
+THe woman in image 1 is standing, sending a kiss to the viewer, in the pose from image3
+The woman from image 1 and the woman from image 2 are posing together for a picture with the scene from image 3 on the background, enjoying the moment, with a happy expression on their faces.
 
 
 
@@ -136,10 +156,27 @@ tar -czvf output_all.tar.gz /workspace/ComfyUI/output
 
 이런 몸을 봤는데... 오빠 오줌이나 처마시라고?
 
-그래... 빨리 싸봐. 장원영이 입에 오줌 철철 싸보라고! 
+그래... 빨리 싸봐. 워녕이 입에 오줌... 졸졸 싸보라고! 
 
 장원영이를 변기로 쓰는 사람이라니! 정말 대단하다 대단해!
 
+오빠 오줌 너무 많이 마시니깐 이제 화장실 가는 사람만 봐도, 오줌 맛이 느껴져.
+
+난 이제 완전 오빠 변기 다 된거나 마찬가지라고.
+
 오빠 오줌 너무 따뜻하고 냄새나고 비려. 배부르네.
 
-더러운 오줌을 아이돌 최고 장원영이한테 싸는 기분이 어때?
+더러운 오줌을 워녕이한테 싸는 기분이 어때?
+
+
+
+
+
+Masquerade Nodes
+
+ControlFlowUtils
+
+
+wget -O "/workspace/runpod-slim/ComfyUI/models/loras/ring.safetensors" "https://civitai.red/api/download/models/2511037?fileId=2398969&token=${CIVITAI_TOKEN}"
+wget -O "/workspace/runpod-slim/ComfyUI/models/loras/ring.safetensors" "https://civitai.red/api/download/models/2511037?fileId=2398969&token=${CIVITAI_TOKEN}"
+
